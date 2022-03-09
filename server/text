@@ -1,0 +1,9 @@
+for adding new attribute
+1.drop table from mysql
+2.sequelize db:migrate:undo:all
+3.sequelize db:migrate
+this.$router.push('/providerfullscreen/providerdashboard'
+
+ .post("/createCat", {
+            major: this.selectedCategory,
+          })
