@@ -1,26 +1,26 @@
 <template>
   <v-row class="flex-column">
-    <h1 class="header-doctors">OUR DEPARTMENTS</h1>
+    <h1 class="header-doctors">OUR ASSISTANTS</h1>
     <v-row justify="center" align="center">
-      <CategoryCard
+      <!-- <CategoryCard
         v-for="gettingAllData in categoryData"
         :key="gettingAllData.id"
         :gettingAllData="gettingAllData"
-      />
+      /> -->
     </v-row>
   </v-row>
 </template>
 
 <script>
-import CategoryCard from "../components/cards/categoryCard.vue";
-import data from "../assets/Data";
+// import CategoryCard from "../components/cards/categoryCard.vue";
+// import data from "../assets/Data";
 export default {
   name: "IndexPage",
 
-  components: { CategoryCard },
+//   components: { CategoryCard },
   data() {
     return {
-      categoryData: data,
+    //   categoryData: data,
     };
   },
   methods: {},
