@@ -34,14 +34,18 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: ["gettingAllData"],
-  data: () => ({
-    reveal: false,
-  }),
+  data: () => ({}),
   methods: {
+    ...mapActions(["setWhatRole","bringAllProvidersWithSameRole"]),
+
     toggleBtnFunsCateg: function () {
-      this.$router.push(`${this.gettingAllData.link}`);
+      this.setWhatRole(this.gettingAllData.title);
+      this.bringAllProvidersWithSameRole();
+      this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
     },
   },
 };

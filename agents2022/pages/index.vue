@@ -14,6 +14,7 @@
 <script>
 import CategoryCard from "../components/cards/categoryCard.vue";
 import data from "../assets/Data";
+
 export default {
   name: "IndexPage",
 
@@ -23,7 +24,8 @@ export default {
       categoryData: data,
     };
   },
-  methods: {},
+  methods: {
+  },
 };
 </script>
 <style scoped>

@@ -3,8 +3,7 @@
    <Navbar/>
   <!-- <v-app-bar app></v-app-bar> -->
         <Nuxt />
-<!-- <Footer /> -->
-  
+<TheFooter/>  
     <!-- <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item @click.native="right = !right">
@@ -23,16 +22,17 @@
 
 <script>
 import Navbar from "../components/Navbar.vue";
+import TheFooter from "../components/TheFooter.vue";
 // import Navbar from "../components/header/Navbar.vue"
 // import Footer from "../components/footer/Footer.vue";
 export default {
     name: "DefaultLayout",
-    components: { Navbar }
+    components: { Navbar, TheFooter }
 }
 </script>
 <style >
  html
  {
-   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+font-family: monospace;
  }
 </style>

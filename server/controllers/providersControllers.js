@@ -16,6 +16,12 @@ const createCat = (req, res) => {
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
+const bringAllProvidersWithSameRole = (req, res) => {
+  const { specifyRole } = req.body;
+  Provider.findAll({ where: { role: specifyRole } })
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
 
 const addOne = (req, res) => {
   const {
@@ -123,4 +129,4 @@ const createService = (req, res) => {
 //    ).catch(err => console.log(err));
 //    console.log(provider)
 //   };
-module.exports = { getAll, addOne, addHours, createCat, createService };
+module.exports = { getAll, addOne, addHours, createCat, createService,bringAllProvidersWithSameRole };

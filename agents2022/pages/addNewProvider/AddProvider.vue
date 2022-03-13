@@ -195,7 +195,7 @@ export default {
       minor: "",
       //////////////////////////////////////////////// roles
       role: "",
-      roles: ["doctor", "assistant", "specialist"],
+      roles: ["DOCTOR", "ASSISTANT", "SPECIALIST"],
     };
   },
 

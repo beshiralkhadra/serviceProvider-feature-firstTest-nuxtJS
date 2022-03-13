@@ -5,6 +5,8 @@ const Provider = {
     servicesInfo: [],
     selectedCategory: null,
     servicesState: [],
+    listingProviders: "",
+    listingProvidersWithResponse: [],
   },
 
   mutations: {
@@ -20,6 +22,12 @@ const Provider = {
     },
     SET_SERVICES_STATE(state, payload) {
       return (state.servicesState = payload);
+    },
+    SET_LISTING_PROVIDERS(state, payload) {
+      return (state.listingProviders = payload);
+    },
+    SET_LISTING_PROVIDERS_WITH_RESPONSE(state, payload) {
+      return (state.listingProvidersWithResponse = payload);
     },
   },
   actions: {
@@ -44,6 +52,23 @@ const Provider = {
     setServicesState({ commit }, payload) {
       commit("SET_SERVICES_STATE", payload);
     },
+  //listing all providers with same role
+    setWhatRole({ commit }, payload) {
+      commit("SET_LISTING_PROVIDERS", payload);
+    },
+    bringAllProvidersWithSameRole({ commit, state }, payload) {
+      try {
+        this.$axios
+          .post("/bringAllProvidersWithSameRole", {
+            specifyRole: state.listingProviders,
+          })
+          .then((resp) => {
+            commit("SET_LISTING_PROVIDERS_WITH_RESPONSE", resp.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   getters: {
@@ -59,6 +84,12 @@ const Provider = {
     },
     servicesState(state) {
       return state.servicesState;
+    },
+    listingProviders(state) {
+      return state.listingProviders;
+    },
+    listingProvidersWithResponse(state) {
+      return state.listingProvidersWithResponse;
     },
   },
 };

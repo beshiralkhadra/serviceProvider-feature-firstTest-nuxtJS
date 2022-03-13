@@ -302,11 +302,11 @@ export default {
       }
     },
 
-    ...mapActions(["setMajor", "setServicesState"]),
+    ...mapActions([ "setServicesState"]),
 
     onSubmit(e) {
       e.preventDefault();
-      console.log(this.time1Sun);
+      // console.log(this.time1Sun);
 
       if (this.$refs.form.validate()) {
         this.$axios
