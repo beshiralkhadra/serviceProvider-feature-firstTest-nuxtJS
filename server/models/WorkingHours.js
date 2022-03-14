@@ -87,7 +87,7 @@ const db =require('../db');
       // },
 });
 
-// User.belongsTo(Provider, { foreignKey: 'provider_id' });
+// Day.belongsTo(Provider, { foreignKey: 'provider_id' });
 
 
 module.exports = Day;

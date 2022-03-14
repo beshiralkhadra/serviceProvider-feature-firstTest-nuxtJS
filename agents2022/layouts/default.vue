@@ -1,7 +1,6 @@
 <template>
   <v-app >
-   <Navbar/>
-  <!-- <v-app-bar app></v-app-bar> -->
+<TheHeader/>  <!-- <v-app-bar app></v-app-bar> -->
         <Nuxt />
 <!-- <Footer /> -->
   
@@ -22,12 +21,11 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
-// import Navbar from "../components/header/Navbar.vue"
-// import Footer from "../components/footer/Footer.vue";
+import TheHeader from "../components/TheHeader.vue";
+
 export default {
     name: "DefaultLayout",
-    components: { Navbar }
+    components: { TheHeader }
 }
 </script>
 <style >

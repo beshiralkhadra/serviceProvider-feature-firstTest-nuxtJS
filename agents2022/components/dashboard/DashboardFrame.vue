@@ -1,4 +1,6 @@
 <template>
+<v-layout>
+
   <v-app id="inspire">
     <v-system-bar app>
       <v-spacer></v-spacer>
@@ -91,10 +93,12 @@
       </v-container>
     </v-main>
   </v-app>
+</v-layout>
 </template>
 
 <script>
   export default {
+  
     data: () => ({
       cards: ['Today', 'Yesterday'],
       drawer: null,

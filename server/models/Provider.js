@@ -20,21 +20,21 @@ let Client =db.define('Provider',{
         allowNull: false,
     
     },
-    email: {
-        type:Sequelize.STRING,
-        allowNull: false, 
+    // email: {
+    //     type:Sequelize.STRING,
+    //     allowNull: false, 
     
-    },
+    // },
     age: {
         type:Sequelize.INTEGER,
         allowNull: false,
     
     },
-    password: {
-        type:Sequelize.STRING,
-        allowNull: false,
+    // password: {
+    //     type:Sequelize.STRING,
+    //     allowNull: false,
     
-    },
+    // },
     gender: {
         type:Sequelize.STRING,
         allowNull: false,

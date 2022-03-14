@@ -58,16 +58,16 @@
             </v-col>
           </div>
           <!------------------------------------------------- email field  -->
-          <v-text-field
+          <!-- <v-text-field
             v-model="email"
             type="email"
             name="email"
             label="example@email.com"
             :rules="emailRules"
             required
-          ></v-text-field>
+          ></v-text-field> -->
           <!------------------------------------------ password fields  -->
-          <div class="d-flex">
+          <!-- <div class="d-flex">
             <v-col cols="12" sm="6">
               <v-text-field
                 v-model="password"
@@ -95,7 +95,7 @@
                 required
               ></v-text-field>
             </v-col>
-          </div>
+          </div> -->
           <!---------------------------------------------- educations fields  -->
           <div class="d-flex">
             <v-col md="4">
@@ -112,7 +112,7 @@
                 v-model="major"
                 type="text"
                 name="major"
-                label="Major"
+                label="Speciality"
                 required
               ></v-text-field>
             </v-col>
@@ -162,26 +162,26 @@ export default {
       gender: "",
       items: ["male", "female", "other"],
       ////////////////////////////////////////////////////////// email
-      email: "",
-      emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
+      // email: "",
+      // emailRules: [
+      //   (v) => !!v || "E-mail is required",
+      //   (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      // ],
       //////////////////////////////////////////////////////// password
-      password: "",
-      show2: false,
-      passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) =>
-          /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) ||
-          "Password must contain at least lowercase letter, one number, a special character and one uppercase letter",
-      ],
-      repeatpass: "",
-      show3: false,
-      repeatPassRules: [
-        (v) => !!v || "Password is required",
-        (v) => v == this.password || "Password is required",
-      ],
+      // password: "",
+      // show2: false,
+      // passwordRules: [
+      //   (v) => !!v || "Password is required",
+      //   (v) =>
+      //     /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) ||
+      //     "Password must contain at least lowercase letter, one number, a special character and one uppercase letter",
+      // ],
+      // repeatpass: "",
+      // show3: false,
+      // repeatPassRules: [
+      //   (v) => !!v || "Password is required",
+      //   (v) => v == this.password || "Password is required",
+      // ],
       ///////////////////////////////////////////////////////// mobile number
       phone: "",
 
@@ -213,8 +213,8 @@ export default {
             age: this.age,
             gender: this.gender,
             phone: this.phone,
-            email: this.email,
-            password: this.password,
+            // email: this.email,
+            // password: this.password,
             education: this.education,
             major: this.major,
             minor: this.minor,

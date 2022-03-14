@@ -37,7 +37,11 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: ["gettingAllData"],
+  props: {
+    gettingAllData:{
+      type: Object
+    },
+  },
   data: () => ({}),
   methods: {
     ...mapActions(["setWhatRole","bringAllProvidersWithSameRole"]),

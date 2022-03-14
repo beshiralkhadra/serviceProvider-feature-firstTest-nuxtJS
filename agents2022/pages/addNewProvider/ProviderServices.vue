@@ -20,6 +20,8 @@
                 return-object
                 hint="What are the services"
                 persistent-hint
+                :rules="servicesRules"
+
               ></v-select>
             </v-col>
             <!-------------------------------------------------------------------------- next btn  -->
@@ -43,6 +45,10 @@ export default {
   data() {
     return {
       selectedServices: [],
+           
+      servicesRules: [
+        (v) => !!v || "Services can not be empty",
+      ],
     };
   },
 
@@ -59,7 +65,7 @@ export default {
           .post("/createService", {
             selectedServices: this.selectedServices,
           })
-          .then(() => console.log("show cafe"));
+          .then(() =>this.$router.push("/"));
       }
     },
   },

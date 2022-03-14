@@ -1,4 +1,6 @@
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 const Provider = require("../models/Provider");
 const Day = require("../models/WorkingHours");
 const Service = require("../models/Service");
@@ -12,7 +14,14 @@ const getAll = (req, res) => {
 
 const createCat = (req, res) => {
   const { major } = req.body;
-  Service.findAll({ where: { category: major } })
+  console.log(major);
+  Service.findAll({
+    where: {
+      category: {
+        [Op.or]: [major, "defaultCate"],
+      },
+    },
+  })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
@@ -30,8 +39,6 @@ const addOne = (req, res) => {
     age,
     gender,
     phone,
-    email,
-    password,
     education,
     major,
     minor,
@@ -43,8 +50,6 @@ const addOne = (req, res) => {
     age: age,
     gender: gender,
     phone: phone,
-    email: email,
-    password: password,
     education: education,
     major: major,
     minor: minor,
@@ -129,4 +134,11 @@ const createService = (req, res) => {
 //    ).catch(err => console.log(err));
 //    console.log(provider)
 //   };
-module.exports = { getAll, addOne, addHours, createCat, createService,bringAllProvidersWithSameRole };
+module.exports = {
+  getAll,
+  addOne,
+  addHours,
+  createCat,
+  createService,
+  bringAllProvidersWithSameRole,
+};

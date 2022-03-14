@@ -1,21 +1,24 @@
 <template>
-  <v-container fluid class="fluid" style="padding: 0">
-    <v-app-bar elevation="1">
-      <v-row class="d-flex justify-space-between">
-        <v-img
+  <v-container fluid style="padding: 0">
+    <v-app-bar width="100%" height="60vh" class="blue lighten-5" elevation="1">
+      <v-row class="d-flex justify-space-around">
+        <!-- <v-img
           lazy-src="https://picsum.photos/id/11/10/6"
           max-height="30"
           max-width="50"
           class="rounded-circle"
           src="https://picsum.photos/id/11/500/300"
-        ></v-img>
+        ></v-img> -->
+        <p style="font-weight: 600;">
+          <span style="color:#3EB8D7">Agents</span><span style="color:#138bbf">On</span><span style="color:#2c599d">Cloud</span>
+        </p>
         <ul class="nav-list">
           <li class="nav-item">
             <nuxt-link to="/" class="nuxtLink">Home</nuxt-link>
           </li>
         </ul>
 
-        <v-btn class="success darken-2 white--text" @click="registerBtn">
+        <v-btn class="blue darken-4 white--text" @click="registerBtn">
           Register
         </v-btn>
       </v-row>
@@ -36,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.nav-list{
+.nav-list {
   list-style: none;
   font-size: 1.2rem;
 }

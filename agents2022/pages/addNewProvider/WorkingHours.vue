@@ -245,6 +245,7 @@ export default {
       time1Sat: "09:00",
       time2Sat: "16:00",
       checkbox7: false,
+ 
     };
   },
 

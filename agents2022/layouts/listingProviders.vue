@@ -1,9 +1,9 @@
 <template>
-  <v-app >
-   <Navbar/>
-  <!-- <v-app-bar app></v-app-bar> -->
-        <Nuxt />
-<TheFooter/>  
+  <v-app>
+    <TheHeader />
+    <!-- <v-app-bar app></v-app-bar> -->
+    <Nuxt />
+    <TheFooter />
     <!-- <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item @click.native="right = !right">
@@ -21,18 +21,16 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
 import TheFooter from "../components/TheFooter.vue";
-// import Navbar from "../components/header/Navbar.vue"
-// import Footer from "../components/footer/Footer.vue";
+import TheHeader from "../components/TheHeader.vue";
+
 export default {
-    name: "DefaultLayout",
-    components: { Navbar, TheFooter }
-}
+  name: "DefaultLayout",
+  components: {TheFooter, TheHeader },
+};
 </script>
-<style >
- html
- {
-font-family: monospace;
- }
+<style>
+html {
+  font-family: monospace;
+}
 </style>

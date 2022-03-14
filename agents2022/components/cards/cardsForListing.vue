@@ -25,7 +25,7 @@
       <v-card-actions>
         <v-btn
           class="categories-listing-Btn mt-5"
-        
+        v-on:click="movingToProviderProfileBtn"
         >
           Read Profile</v-btn
         >
@@ -36,12 +36,16 @@
 
 <script>
 export default {
-  props: ["showAllProviders"],
+  props: {
+    showAllProviders: {
+      type: Object
+    },
+  },
   data: () => ({}),
   methods: {
-    // toggleBtnFunsCateg: function () {
-    //   this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
-    // },
+    movingToProviderProfileBtn: function () {
+      this.$router.push('/providerfullscreen/' + this.showAllProviders.id);
+    },
   },
 };
 </script>
