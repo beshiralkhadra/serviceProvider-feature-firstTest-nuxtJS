@@ -48,7 +48,7 @@ export default {
 
     toggleBtnFunsCateg: function () {
       this.setWhatRole(this.gettingAllData.title);
-      this.bringAllProvidersWithSameRole();
+      this.bringAllProvidersWithSameRole(); 
       this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
     },
   },

@@ -7,6 +7,7 @@ const Provider = {
     servicesState: [],
     listingProviders: "",
     listingProvidersWithResponse: [],
+    e1:1
   },
 
   mutations: {
@@ -28,6 +29,9 @@ const Provider = {
     },
     SET_LISTING_PROVIDERS_WITH_RESPONSE(state, payload) {
       return (state.listingProvidersWithResponse = payload);
+    },
+    SET_E1(state, payload) {
+      return (state.e1 = payload);
     },
   },
   actions: {

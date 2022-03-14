@@ -5,7 +5,12 @@
       <!-------------------------- sunday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Sunday" readonly solo></v-text-field>
+          <v-text-field
+            value="Sunday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -14,6 +19,7 @@
             name="timeSun"
             label="Time 1S"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -23,6 +29,7 @@
             name="timeSun"
             label="Time 2S"
             required
+            hide-details
           ></v-text-field>
         </v-col>
 
@@ -30,12 +37,18 @@
           v-model="checkbox1"
           @click="checkedBox1()"
           :label="`Off`"
+          hide-details
         ></v-checkbox>
       </v-row>
       <!------------------------------------------ monday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Monday" readonly solo></v-text-field>
+          <v-text-field
+            value="Monday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -44,6 +57,7 @@
             name="time1M"
             label="Time 1M"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -53,6 +67,7 @@
             name="time2M"
             label="Time 2M"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-checkbox
@@ -64,7 +79,12 @@
       <!----------------------------------------------- tuesday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Tuesday" readonly solo></v-text-field>
+          <v-text-field
+            value="Tuesday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -73,6 +93,7 @@
             name="time1Tu"
             label="Time 1Tu"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -82,6 +103,7 @@
             name="time2Tu"
             label="Time 2Tu"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-checkbox
@@ -93,7 +115,12 @@
       <!---------------------------------------------- wednesday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Wednesday" readonly solo></v-text-field>
+          <v-text-field
+            value="Wednesday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -102,6 +129,7 @@
             name="time1W"
             label="Time 1W"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -111,6 +139,7 @@
             name="time2W"
             label="Time 2W"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-checkbox
@@ -122,7 +151,12 @@
       <!--------------------------------------------- thurday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Thursday" readonly solo></v-text-field>
+          <v-text-field
+            value="Thursday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -131,6 +165,7 @@
             name="time1Th"
             label="Time 1Th"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -140,6 +175,7 @@
             name="time2Th"
             label="Time 2Th"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-checkbox
@@ -151,7 +187,12 @@
       <!------------------------------------------ friday  -->
       <v-row class="justify-space-around">
         <v-col md="3">
-          <v-text-field value="Friday" readonly solo></v-text-field>
+          <v-text-field
+            value="Friday"
+            readonly
+            solo
+            hide-details
+          ></v-text-field>
         </v-col>
         <v-col md="3">
           <v-text-field
@@ -160,6 +201,7 @@
             name="time1F"
             label="Time 1F"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col md="3">
@@ -169,6 +211,7 @@
             name="time2F"
             label="Time 2F"
             required
+            hide-details
           ></v-text-field>
         </v-col>
         <v-checkbox
@@ -245,7 +288,6 @@ export default {
       time1Sat: "09:00",
       time2Sat: "16:00",
       checkbox7: false,
- 
     };
   },
 
@@ -303,7 +345,7 @@ export default {
       }
     },
 
-    ...mapActions([ "setServicesState"]),
+    ...mapActions(["setServicesState"]),
 
     onSubmit(e) {
       e.preventDefault();

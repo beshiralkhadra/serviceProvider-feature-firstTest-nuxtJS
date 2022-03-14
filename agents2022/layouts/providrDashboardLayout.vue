@@ -1,12 +1,15 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="text-h6"> Application </v-list-item-title>
-          <v-list-item-subtitle> subtext </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+    <!-- <v-navigation-drawer v-model="drawer" app :mobile-breakpoint="768">
+      <v-card class="pa-4" height="150" color="primary" dark>
+        <v-avatar size="70">
+          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+        </v-avatar>
+        <div class="white--text font-weight-bold text-subtitle-1">
+          Beshir Alkhadra
+        </div>
+        <div class="white--text text-subtitle-2">Beshir@gmail.com</div>
+      </v-card>
 
       <v-divider></v-divider>
 
@@ -21,11 +24,12 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-app-bar
       app
       color="primary"
       dark
+      height="150"
       prominent
       src="../assets/img/doctors.jpg"
     >
@@ -44,14 +48,6 @@
 
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-app-bar>
 
