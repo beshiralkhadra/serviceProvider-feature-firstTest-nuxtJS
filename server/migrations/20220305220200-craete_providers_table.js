@@ -16,6 +16,11 @@ module.exports = {
    
      
     },
+    role_id: {
+        ///FKey
+        type: Sequelize.INTEGER(32),
+        allowNull: true,
+      },
     firstName: {
         type:Sequelize.STRING,
         allowNull: false,
@@ -68,11 +73,11 @@ module.exports = {
         allowNull: false,
     
     },
-    role: {
-        type:Sequelize.STRING,
-        allowNull: false,
+    // role: {
+    //     type:Sequelize.STRING,
+    //     allowNull: false,
     
-    },
+    // },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE,
       });

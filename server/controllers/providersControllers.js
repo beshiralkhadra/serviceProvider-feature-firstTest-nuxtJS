@@ -5,10 +5,60 @@ const Provider = require("../models/Provider");
 const Day = require("../models/WorkingHours");
 const Service = require("../models/Service");
 const Provider_Service = require("../models/provider_service");
+const Role = require("../models/Role");
+const WorkingHours = require("../models/WorkingHours");
 
-const getAll = (req, res) => {
+const getAllProviders = (req, res) => {
   Provider.findAll()
     .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
+const getAllRoles = (req, res) => {
+  Role.findAll()
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
+const getAllWorkingHours = (req, res) => {
+  WorkingHours.findAll()
+    .then((resp) => {
+      let wholeArrayForWorkingHours =[]
+      for (let i = 0; i < resp.length; i++) {
+        let workingHoursForEachProvider = {}; 
+        workingHoursForEachProvider.provider_id=resp[i].dataValues.provider_id
+        workingHoursForEachProvider.sunday = {
+          from: resp[i].dataValues.sunday_first,
+          to: resp[i].dataValues.sundayT2,
+        };
+        workingHoursForEachProvider.monday = {
+          from: resp[i].dataValues.mondayT1,
+          to: resp[i].dataValues.mondayT2,
+        };
+        workingHoursForEachProvider.tuesday = {
+          from: resp[i].dataValues.tuesdayT1,
+          to: resp[i].dataValues.tuesdayT2,
+        };
+        workingHoursForEachProvider.wednesday = {
+          from: resp[i].dataValues.wednesdayT1,
+          to: resp[i].dataValues.wednesdayT2,
+        };
+        workingHoursForEachProvider.thursday = {
+          from: resp[i].dataValues.thursdayT1,
+          to: resp[i].dataValues.thursdayT2,
+        };
+        workingHoursForEachProvider.friday = {
+          from: resp[i].dataValues.fridayT1,
+          to: resp[i].dataValues.fridayT2,
+        };
+        workingHoursForEachProvider.saturday = {
+          from: resp[i].dataValues.saturdayT1,
+          to: resp[i].dataValues.saturdayT2,
+        };
+        wholeArrayForWorkingHours.push(workingHoursForEachProvider);
+      };
+      res.send(wholeArrayForWorkingHours)
+
+    
+    })
     .catch((err) => res.send(err));
 };
 
@@ -27,7 +77,7 @@ const createCat = (req, res) => {
 };
 const bringAllProvidersWithSameRole = (req, res) => {
   const { specifyRole } = req.body;
-  Provider.findAll({ where: { role: specifyRole } })
+  Provider.findAll({ where: { role_id: specifyRole } })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
@@ -42,9 +92,10 @@ const addOne = (req, res) => {
     education,
     major,
     minor,
-    role,
+    role_id,
   } = req.body;
   Provider.create({
+    role_id: role_id,
     firstName: username,
     lastName: lastName,
     age: age,
@@ -53,7 +104,6 @@ const addOne = (req, res) => {
     education: education,
     major: major,
     minor: minor,
-    role: role,
   })
     .then((resp) => res.send({ message: "Added Successfully" }))
     .catch((err) => res.send(err));
@@ -135,10 +185,12 @@ const createService = (req, res) => {
 //    console.log(provider)
 //   };
 module.exports = {
-  getAll,
+  getAllProviders,
   addOne,
   addHours,
   createCat,
   createService,
   bringAllProvidersWithSameRole,
+  getAllRoles,
+  getAllWorkingHours,
 };

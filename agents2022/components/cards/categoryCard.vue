@@ -47,7 +47,7 @@ export default {
     ...mapActions(["setWhatRole","bringAllProvidersWithSameRole"]),
 
     toggleBtnFunsCateg: function () {
-      this.setWhatRole(this.gettingAllData.title);
+      this.setWhatRole(this.gettingAllData.id);
       this.bringAllProvidersWithSameRole(); 
       this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
     },

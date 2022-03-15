@@ -1,13 +1,26 @@
-const router = require("express").Router() 
-const {getAll,addOne,addHours,createCat,createService,deleteProvider,updateDay,bringAllProvidersWithSameRole} =require('../controllers/providersControllers')
-router.get('/',getAll)
+const router = require("express").Router();
+const {
+  getAllProviders,
+  addOne,
+  addHours,
+  createCat,
+  createService,
+  deleteProvider,
+  updateDay,
+  bringAllProvidersWithSameRole,
+  getAllRoles,
+  getAllWorkingHours,
+} = require("../controllers/providersControllers");
+router.get("/providers", getAllProviders);
+router.get("/roles", getAllRoles);
+router.get("/workingHours", getAllWorkingHours);
 // router.get('/getServices',getServices)
-router.post('/create',addOne)
-router.post('/createHours',addHours)
+router.post("/create", addOne);
+router.post("/createHours", addHours);
 // router.delete('/delete/:id',deleteProvider)
-router.post('/createCat',createCat)
-router.post('/createService',createService)
-router.post('/bringAllProvidersWithSameRole',bringAllProvidersWithSameRole)
+router.post("/createCat", createCat);
+router.post("/createService", createService);
+router.post("/bringAllProvidersWithSameRole", bringAllProvidersWithSameRole);
 // router.put('/updateDay',updateDay)
 
-module.exports =router
+module.exports = router;

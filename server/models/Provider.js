@@ -10,6 +10,11 @@ let Client =db.define('Provider',{
    
      
     },
+    role_id: {
+        ///FKey
+        type: Sequelize.INTEGER(32),
+        allowNull: true,
+      },
     firstName: {
         type:Sequelize.STRING,
         allowNull: false,
@@ -62,13 +67,16 @@ let Client =db.define('Provider',{
         allowNull: false,
     
     },
-    role: {
-        type:Sequelize.STRING,
-        allowNull: false,
+    // role: {
+    //     type:Sequelize.STRING,
+    //     allowNull: false,
     
-    },
+    // },
 },
 );
+// Provider.associate = models => {
+//     Provider.hasOne(models.Role);
+//   };
 // providers.associate = (models) => {
 //     providers.belongsToMany(models.srvices, {
 //       foreignKey: 'providerId', 

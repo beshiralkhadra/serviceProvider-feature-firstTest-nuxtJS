@@ -46,8 +46,7 @@
                 v-model="gender"
                 :items="items"
                 label="choose gender..."
-                                hide-details
-
+                hide-details
               >
               </v-select>
             </v-col>
@@ -135,7 +134,12 @@
               ></v-text-field>
             </v-col>
           </div>
-          <v-select v-model="role" :items="roles" label="choose role...">
+          <v-select
+            v-model="role"
+            :items="getAllRoles"
+            item-text="role_name"
+            label="choose role..."
+          >
           </v-select>
           <!-------------------------------------------------------------------------- next btn  -->
           <v-row class="justify-end" no-gutters>
@@ -151,7 +155,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AddProvider",
@@ -204,19 +208,31 @@ export default {
       minor: "",
       //////////////////////////////////////////////// roles
       role: "",
-      roles: ["DOCTOR", "ASSISTANT", "SPECIALIST"],
     };
   },
-
+  mounted() {
+    this.$store.dispatch("getRoles");
+  },
+  computed: {
+    ...mapGetters(["getAllRoles"]),
+  },
   methods: {
     ...mapActions(["setMajor"]),
 
     onSubmit(e) {
+      let role_id = null;
       e.preventDefault();
+      this.getAllRoles.forEach((element) => {
+        if (this.role == element.role_name) {
+          role_id = element.id;
+        }
+      });
+
       this.setMajor(this.major);
       if (this.$refs.form.validate()) {
         this.$axios
           .post("/create", {
+            role_id: role_id,
             username: this.name,
             lastName: this.lastName,
             age: this.age,
@@ -227,7 +243,6 @@ export default {
             education: this.education,
             major: this.major,
             minor: this.minor,
-            role: this.role,
           })
           .then(() => this.$router.push("/addnewprovider/workinghours"));
       }

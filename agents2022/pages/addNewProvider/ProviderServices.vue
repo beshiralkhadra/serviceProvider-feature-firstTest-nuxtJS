@@ -13,10 +13,10 @@
               <v-select
                 v-model="selectedServices"
                 :items="servicesState"
+                item-text="service_name"
                 label="Select"
                 multiple
                 chips
-                item-text="service_name"
                 return-object
                 hint="What are the services"
                 persistent-hint

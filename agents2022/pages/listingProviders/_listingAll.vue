@@ -2,22 +2,25 @@
   <v-container>
     <v-row class="flex-column">
       <h1 class="header-doctors">OUR {{ $route.params.listingAll }}</h1>
-      <div>
-        <v-text-field
-          type="text"
-          dense
-          placeholder="Search Doctor Name"
-          v-model="searchTerm"
-          v-on:input="search"
-        ></v-text-field>
-        <v-autocomplete
-            v-model="item"
-            :items="items"
+      <v-row>
+        <v-col cols="9">
+          <v-text-field
+            type="text"
             dense
-            
-            label="Filter based on category"
-          ></v-autocomplete>
-      </div>
+            placeholder="Search Doctor Name"
+            v-model="searchTerm"
+            v-on:input="search"
+          ></v-text-field>
+        </v-col>
+        <v-autocomplete
+          v-model="item"
+          :items="items"
+          dense
+          outlined
+          label="Filter based on category"
+        ></v-autocomplete>
+      </v-row>
+      <v-col cols="2"> </v-col>
       <!-- <SearchBar @getOnchange="getOnchange"/> -->
       <div v-if="myAllProvidersWithSameRole.length != 0">
         <v-row justify="center" align="center">
@@ -28,7 +31,7 @@
           />
         </v-row>
       </div>
-      <v-row v-else class="justify-center align-center" style="height: 50vh;">
+      <v-row v-else class="justify-center align-center" style="height: 50vh">
         <h1 class="blue--text">there is no providers</h1>
       </v-row>
     </v-row>
@@ -44,18 +47,17 @@ export default {
   data() {
     return {
       searchTerm: "",
-            items: ['none','cate1', 'cte3', 'cate5', 'cate7'],
-      item: '',
-
+      items: ["none", "cate1", "cte3", "cate5", "cate7"],
+      item: "",
     };
   },
   methods: {
     search() {
       // console.log(this.searchTerm, "bbbebebeb");
     },
-    testingFilter(){
+    testingFilter() {
       console.log(this.item);
-    }
+    },
     // getOnchange(searchTerm){
     //   console.log(searchTerm)
     // }
@@ -66,27 +68,27 @@ export default {
   computed: {
     myAllProvidersWithSameRole() {
       if (this.searchTerm) {
-        console.log(this.item ,"dsdddddddd")
-        let savingAllProviders = this.$store.getters.listingProvidersWithResponse.filter(
-          (item) => {
+        console.log(this.item, "dsdddddddd");
+        let savingAllProviders =
+          this.$store.getters.listingProvidersWithResponse.filter((item) => {
             return this.searchTerm
               .toLowerCase()
               .split("")
-              .every((v) => item.firstName.toLowerCase().includes(v) ) 
-          }
-        );
+              .every((v) => item.firstName.toLowerCase().includes(v));
+          });
         if (savingAllProviders.length == 0) {
-          console.log(savingAllProviders)
+          console.log(savingAllProviders);
           return savingAllProviders;
         } else {
           return savingAllProviders;
         }
-      }else if(this.item){
-        return this.$store.getters.listingProvidersWithResponse.filter((item)=>{
-          return this.item.includes(item.major)
-        })
-      }
-       else {
+      } else if (this.item) {
+        return this.$store.getters.listingProvidersWithResponse.filter(
+          (item) => {
+            return this.item.includes(item.major);
+          }
+        );
+      } else {
         return this.$store.getters.listingProvidersWithResponse;
       }
     },

@@ -7,12 +7,16 @@ const Provider = {
     servicesState: [],
     listingProviders: "",
     listingProvidersWithResponse: [],
+    getAllRoles: [],
     e1:1
   },
 
   mutations: {
     SET_INFO(state, payload) {
       return (state.info = payload);
+    },
+    SET_ROLES(state, payload) {
+      return (state.getAllRoles = payload);
     },
 
     SET_SERVICES_INFO(state, payload) {
@@ -38,12 +42,27 @@ const Provider = {
     /// get provider actions
     getProviders({ commit, dispatch }) {
       try {
-        let data = this.$axios.$get("/");
-        commit("SET_INFO", data);
+        this.$axios.$get("/providers").then((resp)=>{
+
+          commit("SET_INFO", resp.data);
+        })
+      } catch (error) {
+        console.error(error); 
+      }
+    },
+    /// get provider roles
+    getRoles({ commit, dispatch }) {
+      try {
+     this.$axios.get("/roles").then((resp)=>{
+
+       console.log(resp.data);
+       commit("SET_ROLES", resp.data);
+     });
       } catch (error) {
         console.error(error);
       }
     },
+
 
     /// get services actions
 
@@ -78,6 +97,9 @@ const Provider = {
   getters: {
     info(state) {
       return state.info;
+    },
+    getAllRoles(state) {
+      return state.getAllRoles;
     },
 
     servicesInfo(state) {
