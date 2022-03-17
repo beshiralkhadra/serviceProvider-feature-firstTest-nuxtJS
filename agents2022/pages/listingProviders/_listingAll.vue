@@ -1,40 +1,105 @@
 <template>
-  <v-container>
-    <v-row class="flex-column">
-      <h1 class="header-doctors">OUR {{ $route.params.listingAll }}</h1>
-      <v-row>
-        <v-col cols="9">
-          <v-text-field
-            type="text"
-            dense
-            placeholder="Search Doctor Name"
-            v-model="searchTerm"
-            v-on:input="search"
-          ></v-text-field>
-        </v-col>
-        <v-autocomplete
-          v-model="item"
-          :items="items"
+  <v-container fluid class="ma-0 pa-0">
+    <v-parallax class="hero">
+      <div class="hero-inner">
+        <h1>OUR {{ $route.params.listingAll }}</h1>
+        <h2>
+          <v-row class="justify-center">
+            <v-breadcrumbs :items="itemsBread" large>
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-row>
+        </h2>
+      </div>
+    </v-parallax>
+    <v-toolbar class="blue lighten-1" height="100vh">
+      <v-row class="justify-center align-center">
+        <v-icon class="mr-5" large color="white" right>
+          mdi-account-box
+        </v-icon>
+        <h1 class="white--text">FIND A {{ $route.params.listingAll }}</h1>
+        <v-text-field
+          type="text"
           dense
           outlined
-          label="Filter based on category"
-        ></v-autocomplete>
+          class="mx-4 white"
+          placeholder="Search Doctor Name"
+          v-model="searchTerm"
+          v-on:input="search"
+          hide-details
+        ></v-text-field>
       </v-row>
-      <v-col cols="2"> </v-col>
-      <!-- <SearchBar @getOnchange="getOnchange"/> -->
-      <div v-if="myAllProvidersWithSameRole.length != 0">
-        <v-row justify="center" align="center">
-          <CardsForListing
-            v-for="showAllProviders in myAllProvidersWithSameRole"
-            :key="showAllProviders.id"
-            :showAllProviders="showAllProviders"
-          />
-        </v-row>
-      </div>
-      <v-row v-else class="justify-center align-center" style="height: 50vh">
-        <h1 class="blue--text">there is no providers</h1>
+    </v-toolbar>
+
+    <v-container>
+      <v-row class="mt-5 justify-center">
+        <!-- ////////////////////////////////////////////////////////// -->
+        <div class="mt-12 pa-5">
+          <h3 class="mb-5">FILTER {{ $route.params.listingAll }}</h3>
+          <v-autocomplete
+            v-model="item"
+            :items="items"
+            outlined
+            class="mb-5"
+            label="Filter based on category"
+            hide-details
+          ></v-autocomplete>
+          <div v-if="item">
+            <v-autocomplete
+              v-model="selectService"
+              :items="items"
+              class="mb-5"
+              outlined
+              label="Filter based on services"
+              hide-details
+            ></v-autocomplete>
+          </div>
+          <!-- <v-autocomplete
+            v-model="item"
+            :items="items"
+            class="mb-5"
+            outlined
+            label="Filter based on category"
+            hide-details
+          ></v-autocomplete> -->
+        </div>
+        <!-- //////////////////////////////////////////////// -->
+
+        <div style="width: 80%">
+          <v-row v-if="myAllProvidersWithSameRole.length != 0">
+            <CardsForListing
+              v-for="(showAllProviders, index) in myAllProvidersWithSameRole"
+              :key="showAllProviders.id"
+              :showAllProviders="showAllProviders"
+              :index_of_array="index"
+            />
+          </v-row>
+          <v-row
+            v-else
+            class="justify-center align-center"
+            style="height: 50vh"
+          >
+            <h1 class="blue--text">
+              THERE IS NO {{ $route.params.listingAll }}
+            </h1>
+          </v-row>
+        </div>
+        <!-- <v-col cols="9" class="mt-5">
+            <v-text-field
+              type="text"
+              dense
+              placeholder="Search Doctor Name"
+              v-model="searchTerm"
+              v-on:input="search"
+              hide-details
+            ></v-text-field>
+          </v-col> -->
+
+        <!-- <SearchBar @getOnchange="getOnchange"/> -->
       </v-row>
-    </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -47,8 +112,21 @@ export default {
   data() {
     return {
       searchTerm: "",
-      items: ["none", "cate1", "cte3", "cate5", "cate7"],
+      items: ["", "cate1", "cate2", "cate3", "cate4", "cate5", "cate6"],
+      itemsBread: [
+        {
+          text: "categories",
+          disabled: false,
+          href: "http://localhost:53533/",
+        },
+        {
+          text: "listing doctors",
+          disabled: true,
+          href: "http://localhost:53533/",
+        },
+      ],
       item: "",
+      selectService: "",
     };
   },
   methods: {
@@ -108,5 +186,40 @@ export default {
   align-items: center;
   margin: 2em auto;
   padding-bottom: 0.5em;
+}
+
+.hero h1 {
+  /* Text styles */
+  font-size: 3.5em;
+
+  /* Margins */
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+.hero {
+  /* Sizing */
+  width: 100vw;
+  height: 210px !important;
+
+  /* Flexbox stuff */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Text styles */
+  text-align: center;
+  color: white;
+
+  /* Background styles */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://cdn.pixabay.com/photo/2021/10/11/17/37/doctor-6701410_960_720.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.v-breadcrumbs >>> a {
+  color: white;
 }
 </style>

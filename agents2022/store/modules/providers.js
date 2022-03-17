@@ -8,7 +8,8 @@ const Provider = {
     listingProviders: "",
     listingProvidersWithResponse: [],
     getAllRoles: [],
-    e1:1
+    getAllHours: [],
+    e1: 1,
   },
 
   mutations: {
@@ -17,6 +18,9 @@ const Provider = {
     },
     SET_ROLES(state, payload) {
       return (state.getAllRoles = payload);
+    },
+    SET_HOURS(state, payload) {
+      return (state.getAllHours = payload);
     },
 
     SET_SERVICES_INFO(state, payload) {
@@ -42,27 +46,35 @@ const Provider = {
     /// get provider actions
     getProviders({ commit, dispatch }) {
       try {
-        this.$axios.$get("/providers").then((resp)=>{
-
+        this.$axios.$get("/providers").then((resp) => {
           commit("SET_INFO", resp.data);
-        })
+        });
       } catch (error) {
-        console.error(error); 
+        console.error(error);
       }
     },
     /// get provider roles
     getRoles({ commit, dispatch }) {
       try {
-     this.$axios.get("/roles").then((resp)=>{
-
-       console.log(resp.data);
-       commit("SET_ROLES", resp.data);
-     });
+        this.$axios.get("/roles").then((resp) => {
+          console.log(resp.data);
+          commit("SET_ROLES", resp.data);
+        });
       } catch (error) {
         console.error(error);
       }
     },
-
+    /// get provider hours
+    getProviderWorkingHours({ commit, dispatch }) {
+      try {
+        this.$axios.get("/workingHours").then((resp) => {
+          // console.log(resp.data);
+          commit("SET_HOURS", resp.data);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     /// get services actions
 
@@ -75,7 +87,7 @@ const Provider = {
     setServicesState({ commit }, payload) {
       commit("SET_SERVICES_STATE", payload);
     },
-  //listing all providers with same role
+    //listing all providers with same role
     setWhatRole({ commit }, payload) {
       commit("SET_LISTING_PROVIDERS", payload);
     },
@@ -100,6 +112,10 @@ const Provider = {
     },
     getAllRoles(state) {
       return state.getAllRoles;
+    },
+    getAllHours(state) {
+      console.log(state.getAllHours);
+      return state.getAllHours;
     },
 
     servicesInfo(state) {

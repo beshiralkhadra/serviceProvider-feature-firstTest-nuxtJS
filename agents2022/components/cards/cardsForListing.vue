@@ -1,33 +1,76 @@
-
-
 <template>
-  <v-card
-    width="400"
-    height="500"
-    class="ma-4 pa-6 blue darken-1
-"
-  >
+  <v-card width="400" height="550" class="ma-4 pa-6 blue darken-1 elevation-12">
     <v-row class="flex-column align-center" no-gutters>
+      <div class="">
+        <!-- {{ getAllHours }} -->
+      </div>
       <!-- <v-card-text> -->
       <p class="text-categories text-h3">{{ showAllProviders.firstName }}</p>
       <p class="text-categories text-h6">{{ showAllProviders.major }}</p>
-      <p class="workingHours-card">
-        <span class="pr-7" style="color: white"> Sunday-Wednesday</span>
-        <span style="color: white"> 09:00 -- 16:00 </span>
-      </p>
-      <p class="workingHours-card">
-        <span class="pr-7" style="color: white"> Sunday-Wednesday</span>
-        <span style="color: white"> 09:00 -- 16:00 </span>
-      </p>
-      <p class="workingHours-card">
-        <span class="pr-7" style="color: white"> Sunday-Wednesday</span>
-        <span style="color: white"> 09:00 -- 16:00 </span>
-      </p>
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Sunday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].sunday.from }}--{{
+            getAllHours[index_of_array].sunday.to
+          }}
+        </span>
+      </v-row>
+
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Monday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].monday.from }}--{{
+            getAllHours[index_of_array].monday.to
+          }}</span
+        >
+      </v-row>
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Tuesday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].tuesday.from }}--{{
+            getAllHours[index_of_array].tuesday.to
+          }}</span
+        >
+      </v-row>
+
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Wednesday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].wednesday.from }}--{{
+            getAllHours[index_of_array].wednesday.to
+          }}</span
+        >
+      </v-row>
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Thursday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].thursday.from }}--{{
+            getAllHours[index_of_array].thursday.to
+          }}</span
+        >
+      </v-row>
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Friday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].friday.from }}--{{
+            getAllHours[index_of_array].friday.to
+          }}</span
+        >
+      </v-row>
+      <v-row class="workingHours-card">
+        <span class="pr-7" style="color: white"> Saturday</span>
+        <span style="color: white">
+          {{ getAllHours[index_of_array].saturday.from }}--{{
+            getAllHours[index_of_array].saturday.to
+          }}</span
+        >
+      </v-row>
       <!-- </v-card-text> -->
       <v-card-actions>
         <v-btn
-          class="categories-listing-Btn mt-5"
-        v-on:click="movingToProviderProfileBtn"
+          class="categories-listing-Btn mt-5 rounded-0 rounded-white"
+          v-on:click="movingToProviderProfileBtn"
+          style="border: 0.7px white solid"
         >
           Read Profile</v-btn
         >
@@ -37,17 +80,29 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     showAllProviders: {
-      type: Object
+      type: Object,
+    },
+    index_of_array: {
+      type: Number,
     },
   },
-  data: () => ({}),
+  data: () => ({
+    index: -1,
+  }),
   methods: {
     movingToProviderProfileBtn: function () {
-      this.$router.push('/providerfullscreen/' + this.showAllProviders.id);
+      this.$router.push("/providerfullscreen/" + this.showAllProviders.id);
     },
+  },
+  mounted() {
+    this.$store.dispatch("getProviderWorkingHours");
+  },
+  computed: {
+    ...mapGetters(["getAllHours"]),
   },
 };
 </script>
@@ -65,10 +120,10 @@ export default {
 .categories-listing-Btn {
   padding: 2em !important;
   /* border-bottom: 10px white bold !important; */
-  border: 1px white !important;
   color: white !important;
   background: transparent !important;
 }
+
 .workingHours-card {
   padding: 0.7em;
 
