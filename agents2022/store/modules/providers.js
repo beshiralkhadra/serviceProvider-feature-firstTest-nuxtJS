@@ -1,5 +1,5 @@
 const Provider = {
-  namespace: true,
+  // namespaced: true,
   state: {
     info: [],
     servicesInfo: [],
@@ -9,6 +9,7 @@ const Provider = {
     listingProvidersWithResponse: [],
     getAllRoles: [],
     getAllHours: [],
+    getAllServicesWithProviders: [],
     e1: 1,
   },
 
@@ -21,6 +22,9 @@ const Provider = {
     },
     SET_HOURS(state, payload) {
       return (state.getAllHours = payload);
+    },
+    SET_ALL_SERVICES_WITH_PROVIDERS(state, payload) {
+      return (state.getAllServicesWithProviders = payload);
     },
 
     SET_SERVICES_INFO(state, payload) {
@@ -75,6 +79,17 @@ const Provider = {
         console.error(error);
       }
     },
+    /// get provider services
+    getProviderServices({ commit, dispatch }) {
+      try {
+        this.$axios.get("/serviceswithproviders").then((resp) => {
+          // console.log(resp.data);
+          commit("SET_ALL_SERVICES_WITH_PROVIDERS", resp.data);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     /// get services actions
 
@@ -114,8 +129,11 @@ const Provider = {
       return state.getAllRoles;
     },
     getAllHours(state) {
-      console.log(state.getAllHours);
       return state.getAllHours;
+    },
+    getAllServicesWithProviders(state) {
+      // console.log(state.getAllServicesWithProviders);
+      return state.getAllServicesWithProviders;
     },
 
     servicesInfo(state) {

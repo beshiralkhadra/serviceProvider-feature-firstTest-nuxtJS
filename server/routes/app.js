@@ -10,9 +10,11 @@ const {
   bringAllProvidersWithSameRole,
   getAllRoles,
   getAllWorkingHours,
+  getAllServices,
 } = require("../controllers/providersControllers");
 router.get("/providers", getAllProviders);
 router.get("/roles", getAllRoles);
+router.get("/serviceswithproviders", getAllServices);
 router.get("/workingHours", getAllWorkingHours);
 // router.get('/getServices',getServices)
 router.post("/create", addOne);

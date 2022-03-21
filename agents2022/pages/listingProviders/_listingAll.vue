@@ -116,8 +116,12 @@ export default {
       itemsBread: [
         {
           text: "categories",
+          link: true,
+          exact: true,
           disabled: false,
-          href: "http://localhost:53533/",
+          to: {
+            name: "index",
+          },
         },
         {
           text: "listing doctors",
@@ -142,6 +146,8 @@ export default {
   },
   mounted() {
     this.$store.dispatch("setWhatRole");
+    // this.$store.dispatch("setWhatRole");
+
   },
   computed: {
     myAllProvidersWithSameRole() {

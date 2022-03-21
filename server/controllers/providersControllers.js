@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-
 const Provider = require("../models/Provider");
 const Day = require("../models/WorkingHours");
 const Service = require("../models/Service");
@@ -18,13 +17,19 @@ const getAllRoles = (req, res) => {
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
+const getAllServices = (req, res) => {
+  Provider_Service.findAll()
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
 const getAllWorkingHours = (req, res) => {
   WorkingHours.findAll()
     .then((resp) => {
-      let wholeArrayForWorkingHours =[]
+      let wholeArrayForWorkingHours = [];
       for (let i = 0; i < resp.length; i++) {
-        let workingHoursForEachProvider = {}; 
-        workingHoursForEachProvider.provider_id=resp[i].dataValues.provider_id
+        let workingHoursForEachProvider = {};
+        workingHoursForEachProvider.provider_id =
+          resp[i].dataValues.provider_id;
         workingHoursForEachProvider.sunday = {
           from: resp[i].dataValues.sunday_first,
           to: resp[i].dataValues.sundayT2,
@@ -54,17 +59,14 @@ const getAllWorkingHours = (req, res) => {
           to: resp[i].dataValues.saturdayT2,
         };
         wholeArrayForWorkingHours.push(workingHoursForEachProvider);
-      };
-      res.send(wholeArrayForWorkingHours)
-
-    
+      }
+      res.send(wholeArrayForWorkingHours);
     })
     .catch((err) => res.send(err));
 };
 
 const createCat = (req, res) => {
   const { major } = req.body;
-  console.log(major);
   Service.findAll({
     where: {
       category: {
@@ -177,6 +179,7 @@ const createService = (req, res) => {
     })
     .catch((err) => res.send(err));
 };
+
 // const updateDay = async (req, res) => {
 //   const {updatedDay} =req.body;
 //   console.log(updatedDay)
@@ -193,4 +196,5 @@ module.exports = {
   bringAllProvidersWithSameRole,
   getAllRoles,
   getAllWorkingHours,
+  getAllServices,
 };

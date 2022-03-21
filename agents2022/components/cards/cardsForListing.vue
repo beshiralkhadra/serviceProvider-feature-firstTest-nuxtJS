@@ -7,6 +7,12 @@
       <!-- <v-card-text> -->
       <p class="text-categories text-h3">{{ showAllProviders.firstName }}</p>
       <p class="text-categories text-h6">{{ showAllProviders.major }}</p>
+      <p class="text-categories text-h6">{{ showAllProviders.id }}</p>
+      <p class="text-categories text-h6">{{ getServicesRelatedToProvider }}</p>
+      <p class="text-categories text-h6">{{ allServices }}</p>
+
+      <!-- <p class="text-categories text-h6">{{ filteredMenuItems }}</p>
+      <p class="text-categories text-h6">{{ allServices }}</p> -->
       <v-row class="workingHours-card">
         <span class="pr-7" style="color: white"> Sunday</span>
         <span style="color: white">
@@ -80,7 +86,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     showAllProviders: {
@@ -92,17 +98,87 @@ export default {
   },
   data: () => ({
     index: -1,
+    allServices: [],
   }),
   methods: {
+    ...mapActions(["getProviderWorkingHours", "getProviderServices"]),
+
     movingToProviderProfileBtn: function () {
       this.$router.push("/providerfullscreen/" + this.showAllProviders.id);
     },
   },
   mounted() {
-    this.$store.dispatch("getProviderWorkingHours");
+    // this.$store.dispatch("getProviderWorkingHours"),
+    //   this.$store.dispatch("getProviderServices");
+    this.getProviderWorkingHours(), this.getProviderServices();
   },
   computed: {
-    ...mapGetters(["getAllHours"]),
+    ...mapGetters(["getAllHours", "getAllServicesWithProviders"]),
+    getServicesRelatedToProvider: function () {
+      let arr1 = this.$store.getters.listingProvidersWithResponse;
+      let arr2 = this.getAllServicesWithProviders;
+      // console.log(arr2);
+
+      let res = [];
+      res = arr1.map((el) => {
+        return el.id;
+      });
+
+      // console.log(res);
+
+      let res2 = [];
+      res = res.forEach((el) => {
+        arr2.map((element) => {
+          if (element.providerId == el) {
+            // this.allServices = element.service_name;
+            res2.push(
+              (res.providerId = {
+                service_name: element.service_name,
+                providerId: element.providerId,
+              })
+            );
+          }
+        });
+        // this.allServices = res2;
+      });
+      console.log(res2);
+      // let rr = this.getAllServicesWithProviders.map((service) => {
+      //   return `provide:${service.id} [${service.service_name}]`;
+      // });
+      // for (let i = 0; i < this.getAllServicesWithProviders.length; i++) {
+      //   let rr = this.getAllServicesWithProviders.filter((service) => {
+      //     return true;
+      //   });
+      //   console.log(rr);
+      // }
+      // for (let i = 0; i < this.getAllServicesWithProviders.length; i++) {
+      //   if (
+      //     this.getAllServicesWithProviders[i].id == this.showAllProviders.id
+      //   ) {
+      //     bv.push(this.getAllServicesWithProviders[i].service_name);
+      //     return bv;
+      //   }
+      // }
+      // console.log(bv, "eeeeeeeeeee");
+      // console.log(this.getServicesFromProvider);
+    },
+
+    // filteredMenuItems() {
+    //   // return "kkkkkkkkkk";
+    //   // console.log(this.showAllProviders.id);
+    //   this.getAllServicesWithProviders.forEach((element) => {
+    //     if (this.showAllProviders.id == element.id) {
+    //       let bn = [];
+    //       bn = element.service_name;
+    //       console.log(bn, element.id);
+    //       this.allServices = [...this.allService, bn];
+    //       // return this.allServices;
+    //       console.log(this.allServices + "hjhjjhj");
+    //     } else {
+    //       return "skmwksmkdw";
+    //     }
+    //   });
+    // },
   },
 };
 </script>
