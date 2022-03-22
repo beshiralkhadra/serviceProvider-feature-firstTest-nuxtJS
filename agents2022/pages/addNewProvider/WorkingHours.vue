@@ -353,13 +353,13 @@ export default {
 
       if (this.$refs.form.validate()) {
         this.$axios
-          .post("/createCat", {
+          .post("/providers/createCat", {
             major: this.selectedCategory,
           })
           .then(
             (response) => this.setServicesState(response.data),
             this.$axios
-              .post("/createHours", {
+              .post("/providers/createHours", {
                 sundayT1: this.time1Sun,
                 sundayT2: this.time2Sun,
                 mondayT1: this.time1M,

@@ -231,7 +231,7 @@ export default {
       this.setMajor(this.major);
       if (this.$refs.form.validate()) {
         this.$axios
-          .post("/create", {
+          .post("/providers/create", {
             role_id: role_id,
             username: this.name,
             lastName: this.lastName,

@@ -2,15 +2,16 @@ import colors from "vuetify/es5/util/colors";
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    port: 30111,
+  },
   head: {
     titleTemplate: "%s - service_providers",
     title: "service_providers",
     htmlAttrs: {
       lang: "en",
     },
-    // server: {
-    //   port: 30111,
-    // },
+
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -44,7 +45,14 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: "http://localhost:5555/",
+    baseURL: "http://localhost:30112/",
+    proxy: true,
+  },
+  proxy: {
+    "/providers/": {
+      target: "http://localhost:30112/",
+      pathRewrite: { "^/providers/": "" },
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

@@ -49,7 +49,7 @@
           <div v-if="item">
             <v-autocomplete
               v-model="selectService"
-              :items="items"
+              :items="servicesList"
               class="mb-5"
               outlined
               label="Filter based on services"
@@ -131,6 +131,7 @@ export default {
       ],
       item: "",
       selectService: "",
+      servicesList: ["", "service1", "service2", "service3", "Filler"],
     };
   },
   methods: {
@@ -147,12 +148,10 @@ export default {
   mounted() {
     this.$store.dispatch("setWhatRole");
     // this.$store.dispatch("setWhatRole");
-
   },
   computed: {
     myAllProvidersWithSameRole() {
       if (this.searchTerm) {
-        console.log(this.item, "dsdddddddd");
         let savingAllProviders =
           this.$store.getters.listingProvidersWithResponse.filter((item) => {
             return this.searchTerm
@@ -167,12 +166,22 @@ export default {
           return savingAllProviders;
         }
       } else if (this.item) {
+        // console.log(this.selectService);
         return this.$store.getters.listingProvidersWithResponse.filter(
           (item) => {
             return this.item.includes(item.major);
           }
         );
-      } else {
+      }
+      //  else if (this.selectService) {
+      //   console.log(this.selectService);
+      //   return this.$store.getters.getAllServicesWithProviders.filter(
+      //     (item) => {
+      //       return this.item.includes(item.service_name);
+      //     }
+      //   );
+      // }
+      else {
         return this.$store.getters.listingProvidersWithResponse;
       }
     },

@@ -1,23 +1,18 @@
 {
   "development": {
-    "host":"localhost",
-    "username": "root",
-    "password": null,
-    "database": "orginal_agentsoncloud_2022",
-    "dialect": "mysql"
+    "host": "localhost",
+    "storage": "orginal_agentsoncloud_2022.sqlite3",
+    "dialect": "sqlite"
   },
   "test": {
-    "host":"localhost",
-    "username": "root",
-    "password": null,
-    "database": "orginal_agentsoncloud_2022",
-    "dialect": "mysql"
+    "host": "localhost",
+
+    "storage": "orginal_agentsoncloud_2022.sqlite3",
+    "dialect": "sqlite"
   },
   "production": {
-    "host":"localhost",
-    "username": "root",
-    "password":null,
-    "database": "orginal_agentsoncloud_2022",
-    "dialect": "mysql"
+    "host": "localhost",
+    "storage": "orginal_agentsoncloud_2022.sqlite3",
+    "dialect": "sqlite"
   }
 }

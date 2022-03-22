@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400" height="550" class="ma-4 pa-6 blue darken-1 elevation-12">
+  <v-card width="400" height="700" class="ma-4 pa-6 blue darken-1 elevation-12">
     <v-row class="flex-column align-center" no-gutters>
       <div class="">
         <!-- {{ getAllHours }} -->
@@ -7,9 +7,17 @@
       <!-- <v-card-text> -->
       <p class="text-categories text-h3">{{ showAllProviders.firstName }}</p>
       <p class="text-categories text-h6">{{ showAllProviders.major }}</p>
-      <p class="text-categories text-h6">{{ showAllProviders.id }}</p>
       <p class="text-categories text-h6">{{ getServicesRelatedToProvider }}</p>
-      <p class="text-categories text-h6">{{ allServices }}</p>
+      <template v-for="service in allServices">
+        <p
+          class="text-categories text-h6"
+          v-if="service.providerId == showAllProviders.id"
+        >
+          service: {{ service.service_name }}
+        </p>
+      </template>
+
+      <!-- <p class="text-categories text-h6">{{ allServices }}</p> -->
 
       <!-- <p class="text-categories text-h6">{{ filteredMenuItems }}</p>
       <p class="text-categories text-h6">{{ allServices }}</p> -->
@@ -118,19 +126,14 @@ export default {
       let arr1 = this.$store.getters.listingProvidersWithResponse;
       let arr2 = this.getAllServicesWithProviders;
       // console.log(arr2);
-
       let res = [];
       res = arr1.map((el) => {
         return el.id;
       });
-
-      // console.log(res);
-
       let res2 = [];
       res = res.forEach((el) => {
         arr2.map((element) => {
           if (element.providerId == el) {
-            // this.allServices = element.service_name;
             res2.push(
               (res.providerId = {
                 service_name: element.service_name,
@@ -139,46 +142,9 @@ export default {
             );
           }
         });
-        // this.allServices = res2;
+        this.allServices = res2;
       });
-      console.log(res2);
-      // let rr = this.getAllServicesWithProviders.map((service) => {
-      //   return `provide:${service.id} [${service.service_name}]`;
-      // });
-      // for (let i = 0; i < this.getAllServicesWithProviders.length; i++) {
-      //   let rr = this.getAllServicesWithProviders.filter((service) => {
-      //     return true;
-      //   });
-      //   console.log(rr);
-      // }
-      // for (let i = 0; i < this.getAllServicesWithProviders.length; i++) {
-      //   if (
-      //     this.getAllServicesWithProviders[i].id == this.showAllProviders.id
-      //   ) {
-      //     bv.push(this.getAllServicesWithProviders[i].service_name);
-      //     return bv;
-      //   }
-      // }
-      // console.log(bv, "eeeeeeeeeee");
-      // console.log(this.getServicesFromProvider);
     },
-
-    // filteredMenuItems() {
-    //   // return "kkkkkkkkkk";
-    //   // console.log(this.showAllProviders.id);
-    //   this.getAllServicesWithProviders.forEach((element) => {
-    //     if (this.showAllProviders.id == element.id) {
-    //       let bn = [];
-    //       bn = element.service_name;
-    //       console.log(bn, element.id);
-    //       this.allServices = [...this.allService, bn];
-    //       // return this.allServices;
-    //       console.log(this.allServices + "hjhjjhj");
-    //     } else {
-    //       return "skmwksmkdw";
-    //     }
-    //   });
-    // },
   },
 };
 </script>

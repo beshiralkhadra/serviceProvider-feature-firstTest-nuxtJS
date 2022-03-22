@@ -59,7 +59,7 @@ export default {
       this.saveSelectedServices(this.selectedServices);
       if (this.$refs.form.validate()) {
         this.$axios
-          .post("/createService", {
+          .post("/providers/createService", {
             selectedServices: this.selectedServices,
           })
           .then(() => this.$router.push("/"));

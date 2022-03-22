@@ -50,7 +50,7 @@ const Provider = {
     /// get provider actions
     getProviders({ commit, dispatch }) {
       try {
-        this.$axios.$get("/providers").then((resp) => {
+        this.$axios.$get("/providers/providers").then((resp) => {
           commit("SET_INFO", resp.data);
         });
       } catch (error) {
@@ -60,7 +60,7 @@ const Provider = {
     /// get provider roles
     getRoles({ commit, dispatch }) {
       try {
-        this.$axios.get("/roles").then((resp) => {
+        this.$axios.get("/providers/roles").then((resp) => {
           console.log(resp.data);
           commit("SET_ROLES", resp.data);
         });
@@ -71,7 +71,7 @@ const Provider = {
     /// get provider hours
     getProviderWorkingHours({ commit, dispatch }) {
       try {
-        this.$axios.get("/workingHours").then((resp) => {
+        this.$axios.get("/providers/workingHours").then((resp) => {
           // console.log(resp.data);
           commit("SET_HOURS", resp.data);
         });
@@ -82,7 +82,7 @@ const Provider = {
     /// get provider services
     getProviderServices({ commit, dispatch }) {
       try {
-        this.$axios.get("/serviceswithproviders").then((resp) => {
+        this.$axios.get("/providers/serviceswithproviders").then((resp) => {
           // console.log(resp.data);
           commit("SET_ALL_SERVICES_WITH_PROVIDERS", resp.data);
         });
@@ -109,7 +109,7 @@ const Provider = {
     bringAllProvidersWithSameRole({ commit, state }, payload) {
       try {
         this.$axios
-          .post("/bringAllProvidersWithSameRole", {
+          .post("/providers/bringAllProvidersWithSameRole", {
             specifyRole: state.listingProviders,
           })
           .then((resp) => {
