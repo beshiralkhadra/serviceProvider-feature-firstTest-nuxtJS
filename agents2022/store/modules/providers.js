@@ -11,6 +11,8 @@ const Provider = {
     getAllHours: [],
     getAllServicesWithProviders: [],
     e1: 1,
+    page: 1,
+    pageLength: "",
   },
 
   mutations: {
@@ -25,6 +27,13 @@ const Provider = {
     },
     SET_ALL_SERVICES_WITH_PROVIDERS(state, payload) {
       return (state.getAllServicesWithProviders = payload);
+    },
+    SET_PAGE_NUMBER(state, payload) {
+      console.log(payload);
+      return (state.page = payload);
+    },
+    SET_PAGE_LENGTH(state, payload) {
+      return (state.pageLength = payload);
     },
 
     SET_SERVICES_INFO(state, payload) {
@@ -61,7 +70,6 @@ const Provider = {
     getRoles({ commit, dispatch }) {
       try {
         this.$axios.get("/providers/roles").then((resp) => {
-          console.log(resp.data);
           commit("SET_ROLES", resp.data);
         });
       } catch (error) {
@@ -80,12 +88,14 @@ const Provider = {
       }
     },
     /// get provider services
-    getProviderServices({ commit, dispatch }) {
+    async getProviderServices({ commit, dispatch }) {
       try {
-        this.$axios.get("/providers/serviceswithproviders").then((resp) => {
-          // console.log(resp.data);
-          commit("SET_ALL_SERVICES_WITH_PROVIDERS", resp.data);
-        });
+        await this.$axios
+          .get("/providers/serviceswithproviders")
+          .then((resp) => {
+            // console.log(resp.data);
+            commit("SET_ALL_SERVICES_WITH_PROVIDERS", resp.data);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -93,9 +103,7 @@ const Provider = {
 
     /// get services actions
 
-    saveSelectedServices({ commit }, payload) {
-      console.log(payload);
-    },
+    saveSelectedServices({ commit }, payload) {},
     setMajor({ commit }, payload) {
       commit("SET_SELECTED_CATEGORY", payload);
     },
@@ -106,14 +114,19 @@ const Provider = {
     setWhatRole({ commit }, payload) {
       commit("SET_LISTING_PROVIDERS", payload);
     },
-    bringAllProvidersWithSameRole({ commit, state }, payload) {
+    async bringAllProvidersWithSameRole({ commit, state }, payload) {
       try {
-        this.$axios
+        await this.$axios
           .post("/providers/bringAllProvidersWithSameRole", {
             specifyRole: state.listingProviders,
+            pageNumber: state.page,
           })
           .then((resp) => {
-            commit("SET_LISTING_PROVIDERS_WITH_RESPONSE", resp.data);
+            commit(
+              "SET_LISTING_PROVIDERS_WITH_RESPONSE",
+              resp.data.rows.reverse()
+            );
+            commit("SET_PAGE_LENGTH", resp.data.count);
           });
       } catch (error) {
         console.log(error);
@@ -150,6 +163,12 @@ const Provider = {
     },
     listingProvidersWithResponse(state) {
       return state.listingProvidersWithResponse;
+    },
+    getPageNumber(state) {
+      return state.page;
+    },
+    getPageLength(state) {
+      return state.pageLength;
     },
   },
 };

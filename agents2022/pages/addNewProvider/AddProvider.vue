@@ -62,6 +62,8 @@
               ></v-text-field>
             </v-col>
           </div>
+          <!----------------------------------------------- add profile picture  -->
+
           <!------------------------------------------------- email field  -->
           <!-- <v-text-field
             v-model="email"
@@ -195,6 +197,7 @@ export default {
       //   (v) => !!v || "Password is required",
       //   (v) => v == this.password || "Password is required",
       // ],
+
       ///////////////////////////////////////////////////////// mobile number
       phone: "",
 
@@ -208,8 +211,10 @@ export default {
       minor: "",
       //////////////////////////////////////////////// roles
       role: "",
+      image: "",
     };
   },
+
   mounted() {
     this.$store.dispatch("getRoles");
   },
@@ -247,6 +252,15 @@ export default {
           .then(() => this.$router.push("/addnewprovider/workinghours"));
       }
     },
+    // onChange(image) {
+    //   console.log("New picture selected!");
+    //   if (image) {
+    //     console.log("Picture loaded.");
+    //     this.image = image;
+    //   } else {
+    //     console.log("FileReader API not supported: use the <form>, Luke!");
+    //   }
+    // },
   },
 };
 </script>

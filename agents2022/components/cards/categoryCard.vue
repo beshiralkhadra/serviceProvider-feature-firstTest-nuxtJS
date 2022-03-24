@@ -38,17 +38,17 @@ import { mapActions } from "vuex";
 
 export default {
   props: {
-    gettingAllData:{
-      type: Object
+    gettingAllData: {
+      type: Object,
     },
   },
   data: () => ({}),
   methods: {
-    ...mapActions(["setWhatRole","bringAllProvidersWithSameRole"]),
+    ...mapActions(["setWhatRole", "bringAllProvidersWithSameRole"]),
 
     toggleBtnFunsCateg: function () {
       this.setWhatRole(this.gettingAllData.id);
-      this.bringAllProvidersWithSameRole(); 
+      this.bringAllProvidersWithSameRole();
       this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
     },
   },

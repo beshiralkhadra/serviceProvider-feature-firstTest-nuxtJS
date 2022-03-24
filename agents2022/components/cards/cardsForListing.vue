@@ -1,13 +1,24 @@
 <template>
-  <v-card width="400" height="700" class="ma-4 pa-6 blue darken-1 elevation-12">
+  <v-card
+    class="card-provider-style ma-4 pa-6 blue darken-1 elevation-12"
+    v-on:click="movingToProviderProfileBtn"
+  >
+    <!-- <v-expand-transition>
+        <div
+          v-if="hover"
+          class="d-flex transition-fast-in-fast-out blue lighten-5 v-card--reveal display-3 white--text"
+          style="height: 100%"
+        ></div>
+      </v-expand-transition> -->
     <v-row class="flex-column align-center" no-gutters>
-      <div class="">
-        <!-- {{ getAllHours }} -->
-      </div>
       <!-- <v-card-text> -->
-      <p class="text-categories text-h3">{{ showAllProviders.firstName }}</p>
+      <p class="text-categories text-h3">
+        {{ showAllProviders.firstName }}
+      </p>
       <p class="text-categories text-h6">{{ showAllProviders.major }}</p>
-      <p class="text-categories text-h6">{{ getServicesRelatedToProvider }}</p>
+      <p class="text-categories text-h6">
+        {{ getServicesRelatedToProvider }}
+      </p>
       <template v-for="service in allServices">
         <p
           class="text-categories text-h6"
@@ -16,8 +27,6 @@
           service: {{ service.service_name }}
         </p>
       </template>
-
-      <!-- <p class="text-categories text-h6">{{ allServices }}</p> -->
 
       <!-- <p class="text-categories text-h6">{{ filteredMenuItems }}</p>
       <p class="text-categories text-h6">{{ allServices }}</p> -->
@@ -80,7 +89,7 @@
         >
       </v-row>
       <!-- </v-card-text> -->
-      <v-card-actions>
+      <!-- <v-card-actions>
         <v-btn
           class="categories-listing-Btn mt-5 rounded-0 rounded-white"
           v-on:click="movingToProviderProfileBtn"
@@ -88,7 +97,7 @@
         >
           Read Profile</v-btn
         >
-      </v-card-actions>
+      </v-card-actions> -->
     </v-row>
   </v-card>
 </template>
@@ -107,18 +116,19 @@ export default {
   data: () => ({
     index: -1,
     allServices: [],
+    show: true,
   }),
   methods: {
-    ...mapActions(["getProviderWorkingHours", "getProviderServices"]),
+    ...mapActions(["getProviderServices"]),
 
     movingToProviderProfileBtn: function () {
       this.$router.push("/providerfullscreen/" + this.showAllProviders.id);
     },
   },
-  mounted() {
-    // this.$store.dispatch("getProviderWorkingHours"),
-    //   this.$store.dispatch("getProviderServices");
-    this.getProviderWorkingHours(), this.getProviderServices();
+  async mounted() {
+    await this.$store.dispatch("getProviderWorkingHours"),
+      //   this.$store.dispatch("getProviderServices");
+      this.getProviderServices();
   },
   computed: {
     ...mapGetters(["getAllHours", "getAllServicesWithProviders"]),
@@ -170,5 +180,9 @@ export default {
   padding: 0.7em;
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+.card-provider-style:hover {
+  transform: scale(1.02);
+  transition: 0.2s;
 }
 </style>

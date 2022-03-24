@@ -35,6 +35,7 @@
 
     <v-container>
       <v-row class="mt-5 justify-center">
+        <ScrollToTop />
         <!-- ////////////////////////////////////////////////////////// -->
         <div class="mt-12 pa-5">
           <h3 class="mb-5">FILTER {{ $route.params.listingAll }}</h3>
@@ -100,12 +101,15 @@
         <!-- <SearchBar @getOnchange="getOnchange"/> -->
       </v-row>
     </v-container>
+    <ThePagination :sendWhichPage="$route.params.listingAll" class="ma-7" />
   </v-container>
 </template>
 
 <script>
 import CardsForListing from "../../components/cards/cardsForListing.vue";
 import SearchBar from "../../components/searchBar.vue";
+import ScrollToTop from "../../components/ScrollToTop.vue";
+import ThePagination from "../../components/ThePagination.vue";
 export default {
   // layout: "listingProviders",
   name: "IndexPage",
@@ -151,6 +155,7 @@ export default {
   },
   computed: {
     myAllProvidersWithSameRole() {
+      // console.log(this.$store.getters.listingProvidersWithResponse);
       if (this.searchTerm) {
         let savingAllProviders =
           this.$store.getters.listingProvidersWithResponse.filter((item) => {
@@ -186,7 +191,7 @@ export default {
       }
     },
   },
-  components: { CardsForListing, SearchBar },
+  components: { CardsForListing, SearchBar, ScrollToTop, ThePagination },
 };
 </script>
 <style scoped>

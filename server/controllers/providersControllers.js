@@ -18,12 +18,22 @@ const getAllRoles = (req, res) => {
     .catch((err) => res.send(err));
 };
 const getAllServices = (req, res) => {
-  Provider_Service.findAll()
+  const { providerId } = req.body;
+  let condition = providerId ? { providerId: { [Op.eq]: providerId } } : null;
+  Provider_Service.findAll({
+    where: condition,
+  })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
 const getAllWorkingHours = (req, res) => {
-  WorkingHours.findAll()
+  const { provider_id } = req.body;
+  let condition = provider_id
+    ? { provider_id: { [Op.eq]: provider_id } }
+    : null;
+  WorkingHours.findAll({
+    where: condition,
+  })
     .then((resp) => {
       let wholeArrayForWorkingHours = [];
       for (let i = 0; i < resp.length; i++) {
@@ -78,8 +88,14 @@ const createCat = (req, res) => {
     .catch((err) => res.send(err));
 };
 const bringAllProvidersWithSameRole = (req, res) => {
-  const { specifyRole } = req.body;
-  Provider.findAll({ where: { role_id: specifyRole } })
+  const { specifyRole, pageNumber } = req.body;
+  let perPage = 4;
+  let parsePageNumber = parseInt(pageNumber);
+  Provider.findAndCountAll({
+    where: { role_id: specifyRole },
+    limit: perPage,
+    offset: perPage * (parsePageNumber - 1),
+  })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };

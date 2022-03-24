@@ -15,5 +15,5 @@ app.use("/", router);
 const port = process.env.port;
 app.listen(port, async () => {
   console.log("hello to my server http://localhost:" + port);
-  await db.sync({ force: true });
+  await db.sync();
 });
