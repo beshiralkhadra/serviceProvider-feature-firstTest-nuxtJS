@@ -1,11 +1,10 @@
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const Provider = require("../models/Provider");
+const Provider = require("../models/provider");
 const Day = require("../models/WorkingHours");
 const Service = require("../models/Service");
 const Provider_Service = require("../models/provider_service");
-const Role = require("../models/Role");
-const WorkingHours = require("../models/WorkingHours");
+const Role = require("../models/role");
 
 const getAllProviders = (req, res) => {
   Provider.findAll()

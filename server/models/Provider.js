@@ -1,59 +1,3 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
-
-let Client = db.define("Provider", {
-  id: {
-    type: Sequelize.INTEGER(32),
-    allowNull: true,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  role_id: {
-    ///FKey
-    type: Sequelize.INTEGER(32),
-    allowNull: true,
-  },
-  firstName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-
-  age: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-
-  gender: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  phone: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-  },
-
-  education: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  major: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  minor: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
-// Provider.associate = models => {
-//     Provider.hasOne(models.Role);
-//   };
 // providers.associate = (models) => {
 //     providers.belongsToMany(models.srvices, {
 //       foreignKey: 'providerId',
@@ -62,4 +6,78 @@ let Client = db.define("Provider", {
 //     });
 //   };
 // Provider.hasMany(Day, { foreignKey: 'provider_id' });
-module.exports = Client;
+// module.exports = Provider;
+
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Provider extends Model {
+    static associate(models) {
+      this.belongsTo(models.Role);
+      this.hasMany(models.Day, { as: "provider_id" });
+
+      this.belongsToMany(models.Service, {
+        foreignKey: "providerId",
+        through: "provider_services",
+        as: "services",
+      });
+    }
+  }
+  Provider.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+      },
+      uuid: {
+        type: DataTypes.UUID,
+
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        autoIncrement: false,
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      age: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+
+      education: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      major: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      minor: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Provider",
+    }
+  );
+  return Provider;
+};

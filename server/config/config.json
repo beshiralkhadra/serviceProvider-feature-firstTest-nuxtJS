@@ -1,17 +1,13 @@
 {
   "development": {
-    "host": "localhost",
     "storage": "orginal_agentsoncloud_2022.sqlite3",
     "dialect": "sqlite"
   },
   "test": {
-    "host": "localhost",
-
     "storage": "orginal_agentsoncloud_2022.sqlite3",
     "dialect": "sqlite"
   },
   "production": {
-    "host": "localhost",
     "storage": "orginal_agentsoncloud_2022.sqlite3",
     "dialect": "sqlite"
   }
