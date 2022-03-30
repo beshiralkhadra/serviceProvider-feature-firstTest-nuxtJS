@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.Provider, {
         foreignKey: "serviceId",
-        through: "provider_services",
-        as: "providers",
+        through: "Provider_Service",
+        as: "Provider",
       });
     }
   }

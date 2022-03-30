@@ -1,10 +1,10 @@
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const Provider = require("../models/provider");
-const Day = require("../models/WorkingHours");
-const Service = require("../models/Service");
-const Provider_Service = require("../models/provider_service");
-const Role = require("../models/role");
+const Provider = require("../models").Provider;
+const Day = require("../models").Day;
+const Service = require("../models").Service;
+const Provider_Service = require("../models").Provider_Service;
+const Role = require("../models").Role;
 
 const getAllProviders = (req, res) => {
   Provider.findAll()
@@ -26,19 +26,20 @@ const getAllServices = (req, res) => {
     .catch((err) => res.send(err));
 };
 const getAllWorkingHours = (req, res) => {
-  const { provider_id } = req.body;
-  let condition = provider_id
-    ? { provider_id: { [Op.eq]: provider_id } }
+  const { ProviderUuid } = req.body;
+  let condition = ProviderUuid
+    ? { ProviderUuid: { [Op.eq]: ProviderUuid } }
     : null;
-  WorkingHours.findAll({
+  Day.findAll({
     where: condition,
   })
     .then((resp) => {
+      // console.log(resp, "/././././././././././././././.");
       let wholeArrayForWorkingHours = [];
       for (let i = 0; i < resp.length; i++) {
         let workingHoursForEachProvider = {};
-        workingHoursForEachProvider.provider_id =
-          resp[i].dataValues.provider_id;
+        workingHoursForEachProvider.ProviderUuid =
+          resp[i].dataValues.ProviderUuid;
         workingHoursForEachProvider.sunday = {
           from: resp[i].dataValues.sunday_first,
           to: resp[i].dataValues.sundayT2,
@@ -88,10 +89,11 @@ const createCat = (req, res) => {
 };
 const bringAllProvidersWithSameRole = (req, res) => {
   const { specifyRole, pageNumber } = req.body;
+  // console.log(specifyRole, "/./././././././././././.");
   let perPage = 4;
   let parsePageNumber = parseInt(pageNumber);
   Provider.findAndCountAll({
-    where: { role_id: specifyRole },
+    where: { RoleId: specifyRole },
     limit: perPage,
     offset: perPage * (parsePageNumber - 1),
   })
@@ -112,7 +114,6 @@ const addOne = (req, res) => {
     role_id,
   } = req.body;
   Provider.create({
-    role_id: role_id,
     firstName: username,
     lastName: lastName,
     age: age,
@@ -121,13 +122,14 @@ const addOne = (req, res) => {
     education: education,
     major: major,
     minor: minor,
+    RoleId: role_id,
   })
     .then((resp) => res.send({ message: "Added Successfully" }))
     .catch((err) => res.send(err));
 };
 const addHours = (req, res) => {
-  Provider.findAll({
-    attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxId"]],
+  Provider.findOne({
+    order: [["uuid", "DESC"]],
   })
     .then((resp) => {
       const {
@@ -146,10 +148,10 @@ const addHours = (req, res) => {
         saturdayT1,
         saturdayT2,
       } = req.body;
-      let maxId = resp[0].dataValues.maxId;
+      let maxId = resp._previousDataValues.uuid;
 
       Day.create({
-        provider_id: maxId,
+        ProviderUuid: maxId,
         sunday_first: sundayT1,
         sundayT2: sundayT2,
         mondayT1: mondayT1,
@@ -171,12 +173,12 @@ const addHours = (req, res) => {
     .catch((err) => res.send(err));
 };
 const createService = (req, res) => {
-  Provider.findAll({
-    attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxId"]],
+  Provider.findOne({
+    order: [["uuid", "DESC"]],
   })
     .then((resp) => {
       const { selectedServices } = req.body;
-      let maxId = resp[0].dataValues.maxId;
+      let maxId = resp._previousDataValues.uuid;
       let wholeServiceObject = [];
       selectedServices.map((looping) => {
         let serviceObj = {

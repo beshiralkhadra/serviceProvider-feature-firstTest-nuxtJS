@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
 
       this.belongsToMany(models.Service, {
         foreignKey: "providerId",
-        through: "provider_services",
-        as: "services",
+        through: "Provider_Service",
+        as: "Service",
       });
     }
   }
@@ -72,6 +72,9 @@ module.exports = (sequelize, DataTypes) => {
       minor: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
       },
     },
     {

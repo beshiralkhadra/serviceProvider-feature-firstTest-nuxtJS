@@ -17,5 +17,5 @@ console.log(db);
 const port = process.env.port;
 app.listen(port, async () => {
   console.log("hello to my server http://localhost:" + port);
-  await db.sequelize.sync({ force: true });
+  await db.sequelize.sync();
 });
