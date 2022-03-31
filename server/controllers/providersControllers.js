@@ -7,7 +7,11 @@ const Provider_Service = require("../models").Provider_Service;
 const Role = require("../models").Role;
 
 const getAllProviders = (req, res) => {
-  Provider.findAll()
+  const { uuid } = req.body;
+  let condition = uuid ? { uuid: { [Op.eq]: uuid } } : null;
+  Provider.findAll({
+    where: condition,
+  })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
@@ -149,7 +153,7 @@ const addHours = (req, res) => {
         saturdayT2,
       } = req.body;
       let maxId = resp._previousDataValues.uuid;
-
+      console.log(maxId, "/././././././././././././././././.");
       Day.create({
         ProviderUuid: maxId,
         sunday_first: sundayT1,
@@ -179,6 +183,7 @@ const createService = (req, res) => {
     .then((resp) => {
       const { selectedServices } = req.body;
       let maxId = resp._previousDataValues.uuid;
+      console.log(maxId, "//./././././././././././.....................");
       let wholeServiceObject = [];
       selectedServices.map((looping) => {
         let serviceObj = {
