@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.INTEGER(32),
         allowNull: true,
       },
-      sunday_first: {
+      sundayT1: {
         type: Sequelize.STRING,
       },
       sundayT2: {

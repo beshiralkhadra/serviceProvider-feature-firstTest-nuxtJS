@@ -25,9 +25,7 @@
             </v-col>
             <!-------------------------------------------------------------------------- next btn  -->
             <v-row class="justify-end" no-gutters>
-              <v-btn @click="onSubmit" class="primary ma-2" dark>
-                Submit
-              </v-btn>
+              <v-btn @click="onSubmit" color="#35b5ac" dark> Submit </v-btn>
             </v-row>
           </v-card-text>
         </v-form>
@@ -40,7 +38,10 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "AddProvider",
-
+  mounted() {
+    this.$store.dispatch("getMaxUuidAction");
+    //   this.$store.dispatch("getProviderServices");
+  },
   data() {
     return {
       selectedServices: [],
@@ -50,7 +51,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["servicesInfo", "selectedCategory", "servicesState"]),
+    ...mapGetters([
+      "servicesInfo",
+      "selectedCategory",
+      "servicesState",
+      "getMaxUuid",
+    ]),
   },
   methods: {
     ...mapActions(["saveSelectedServices"]),
@@ -60,6 +66,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$axios
           .post("/providers/createService", {
+            providerUuid: this.getMaxUuid,
             selectedServices: this.selectedServices,
           })
           .then(() => this.$router.push("/"));

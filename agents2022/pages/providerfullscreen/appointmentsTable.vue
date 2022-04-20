@@ -1,36 +1,31 @@
 <template>
   <div className="reservation-table">
+    {{ getAllAppointmentsForSpecificProvider }}
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Gender</th>
-          <th>Education</th>
+          <th>Date</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Booked</th>
           <th>Created At</th>
-          <th>Updated At</th>
-          <th>Actions</th>
-          <th>Update</th>
-          <th>Update</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="detailedInfo in myInfo" :key="detailedInfo.id">
+        <tr
+          v-for="detailedInfo in bringAllAppointmentsForSpecificProvider"
+          :key="detailedInfo.id"
+        >
           <td data-column="ID">{{ detailedInfo.id }}</td>
-          <td data-column="USERNAME">{{ detailedInfo.firstName }}</td>
-          <td data-column="SERVICE">{{ detailedInfo.lastName }}</td>
-          <td data-column="ID">{{ detailedInfo.email }}</td>
-          <td data-column="ID">{{ detailedInfo.password }}</td>
-          <td data-column="USERNAME">{{ detailedInfo.gender }}</td>
-          <td data-column="SERVICE">{{ detailedInfo.education }}</td>
+          <td data-column="USERNAME">{{ detailedInfo.date }}</td>
+          <td data-column="SERVICE">{{ detailedInfo.from }}</td>
+          <td data-column="ID">{{ detailedInfo.to }}</td>
+          <td data-column="ID">{{ detailedInfo.booked }}</td>
           <td data-column="SERVICE">{{ detailedInfo.createdAt }}</td>
-          <td data-column="SERVICE">{{ detailedInfo.updatedAt }}</td>
           <!-- <td data-column="SERVICE"><v-icon small @click="deleteButton(detailedInfo.id)" style="color: red;">mdi-delete</v-icon></td> -->
           <!-- <td data-column="SERVICE"><v-icon small @click="editProvider(detailedInfo.id)" style="color: green;">mdi-pencil</v-icon></td> -->
-          <td data-column="SERVICE">
+          <!-- <td data-column="SERVICE">
             <v-text-field
               v-model="newEmail"
               type="email"
@@ -38,49 +33,29 @@
               label="Email"
               required
             ></v-text-field>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
+  layout: "providrDashboardLayout",
+
   data() {
     return {
       newEmail: "",
     };
   },
-  methods: {
-    // deleteButton(id){
-    //       this.$axios.delete(`/delete/${id}`).then((response) => {
-    // return this.info.filter((items)=>{
-    //   return items.id != id
-    // })
-    // })
-    // },
-    // editProvider(id){
-    //      this.$axios.put(`/update/${id}`,{  updatedEmail : this.newEmail}).then((response) => {
-    //          console.log(response)
-    // // return this.info.filter((items)=>{
-    // //   return items.id != id
-    // // })
-    // })
-    // }
-  },
-  // mounted ({state,commit}) {
-  //     this.$axios.get('/')
-  //       .then(response => {commit('setInfo',state.info = response.data)})
-
-  //   },
   mounted() {
-    this.$store.dispatch("getProviders");
+    this.$store.dispatch("getAllAppointmentsForSpecificProvider");
   },
+  methods: {},
+
   computed: {
-    myInfo() {
-      return this.$store.state.info;
-    },
+    ...mapGetters(["bringAllAppointmentsForSpecificProvider"]),
   },
 };
 </script>
@@ -93,7 +68,7 @@ table {
 }
 
 th {
-  background: #80cbc4;
+  background: #35b5ac;
   color: white;
   font-weight: bold;
 }

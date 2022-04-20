@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.Role);
       this.hasMany(models.Day, { as: "provider_id" });
+      this.hasMany(models.LeaveApplication);
+      this.hasMany(models.VacationApplication);
+      this.hasMany(models.ProviderAppointments);
 
       this.belongsToMany(models.Service, {
         foreignKey: "providerId",
@@ -27,14 +30,12 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
       },
       uuid: {
         type: DataTypes.UUID,
-
-        primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        autoIncrement: false,
       },
       firstName: {
         type: DataTypes.STRING,
@@ -58,7 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       phone: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
 
       education: {
@@ -75,6 +75,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: "latest",
       },
     },
     {

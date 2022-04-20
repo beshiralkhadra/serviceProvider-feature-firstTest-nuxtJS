@@ -4,7 +4,7 @@ const data = [
     src: require("./img/doctor_1.jpg"),
     title: "DOCTOR",
     des: "button_one",
-    color: "#3EB8D7",
+    color: "#80CBC4",
     link: "/listingProviders/",
   },
   {
@@ -12,7 +12,7 @@ const data = [
     src: require("./img/doctor_2.jpg"),
     title: "ASSISTANT",
     des: "button_two",
-    color: "#0392CE",
+    color: "#35b5ac",
     link: "/listingProviders/",
   },
   {
@@ -20,7 +20,7 @@ const data = [
     src: require("./img/doctor_3.jpg"),
     title: "SPECIALIST",
     des: "button_three",
-    color: "#3065B5",
+    color: "#248585",
     link: "/listingProviders/",
   },
 ];

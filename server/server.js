@@ -12,8 +12,6 @@ const router = require("./routes/app");
 
 app.use("/", router);
 
-console.log(db);
-
 const port = process.env.port;
 app.listen(port, async () => {
   console.log("hello to my server http://localhost:" + port);

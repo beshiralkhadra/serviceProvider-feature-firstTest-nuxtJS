@@ -13,7 +13,7 @@
 //     type: Sequelize.INTEGER,
 //     allowNull: true,
 //   },
-//   sunday_first: {
+//   sundayT1: {
 //     type: Sequelize.STRING,
 //   },
 //   sundayT2: {
@@ -106,8 +106,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      providerUuid: {
+        type: DataTypes.UUID,
+      },
 
-      sunday_first: {
+      sundayT1: {
         type: DataTypes.STRING,
       },
       sundayT2: {

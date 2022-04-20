@@ -251,9 +251,14 @@
       </v-row>
       <!----------------------------------- next btn  -->
       <v-row class="justify-end" no-gutters>
-        <v-btn @click="onSubmit" type="submit" class="primary ma-2" dark>
+        <v-btn
+          @click="onSubmit"
+          type="submit"
+          color="#35b5ac"
+          class="white--text"
+        >
           Next
-          <v-icon dark left> mdi-arrow-right </v-icon>
+          <v-icon class="white--text" left> mdi-arrow-right </v-icon>
         </v-btn>
       </v-row>
     </v-form>
@@ -264,6 +269,10 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "WorkingHours",
+  mounted() {
+    this.$store.dispatch("getMaxUuidAction");
+    //   this.$store.dispatch("getProviderServices");
+  },
 
   data() {
     return {
@@ -292,7 +301,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["selectedCategory"]),
+    ...mapGetters(["selectedCategory", "getMaxUuid"]),
   },
   methods: {
     checkedBox1() {
@@ -360,6 +369,7 @@ export default {
             (response) => this.setServicesState(response.data),
             this.$axios
               .post("/providers/createHours", {
+                providerUuid: this.getMaxUuid,
                 sundayT1: this.time1Sun,
                 sundayT2: this.time2Sun,
                 mondayT1: this.time1M,

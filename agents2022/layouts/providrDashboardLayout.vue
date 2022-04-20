@@ -1,31 +1,51 @@
 <template>
   <v-app id="inspire">
-    <!-- <v-navigation-drawer v-model="drawer" app :mobile-breakpoint="768">
-      <v-card class="pa-4" height="150" color="primary" dark>
-        <v-avatar size="70">
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-        </v-avatar>
-        <div class="white--text font-weight-bold text-subtitle-1">
-          Beshir Alkhadra
-        </div>
-        <div class="white--text text-subtitle-2">Beshir@gmail.com</div>
+    <template>
+      <v-card>
+        <v-toolbar class="d-flex align-center justify-center teal" dark flat>
+          <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+
+          <!-- <v-toolbar-title>Your Dashboard</v-toolbar-title> -->
+
+          <!-- <v-spacer></v-spacer> -->
+
+          <!-- <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn> -->
+
+          <!-- <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn> -->
+
+          <template v-slot:extension>
+            <v-tabs v-model="tab" align-with-title>
+              <v-tabs-slider color="white"></v-tabs-slider>
+
+              <v-tab to="/"> Profile </v-tab>
+              <v-tab-item value="search">
+                <AddProvider />
+              </v-tab-item>
+              <v-tab to="/providerfullscreen/appointmentstable"
+                >Appointments</v-tab
+              >
+              <v-tab to="/addnewprovider/addprovider"> Gallery </v-tab>
+              <v-tab-item value="search">
+                <AddProvider />
+              </v-tab-item>
+            </v-tabs>
+          </template>
+        </v-toolbar>
+
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="item in items2" :key="item">
+            <v-card flat>
+              <v-card-text v-text="text"></v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
-
-      <v-divider></v-divider>
-
-      <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" :to="item.link">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer> -->
-    <v-app-bar
+    </template>
+    <!-- <v-app-bar
       app
       color="primary"
       dark
@@ -49,7 +69,7 @@
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
 
     <v-main>
       <!--  -->
@@ -59,20 +79,16 @@
 </template>
 
 <script>
+import AddProvider from "../pages/addNewProvider/AddProvider.vue";
+import _ProviderDashboard from "../pages/providerfullscreen/_ProviderDashboard.vue";
 export default {
   data: () => ({
     drawer: null,
-    items: [
-      { title: "Create", icon: "mdi-plus-outline", link: "/" },
-      {
-        title: "Read",
-        icon: "mdi-file-outline",
-        link: "/addnewprovider/addprovider",
-      },
-      { title: "Update", icon: "mdi-update", link: "/auth/login" },
-      { title: "Delete", icon: "mdi-delete", link: "/" },
-    ],
+    tab: null,
+    items2: ["web", "shopping", "videos", "images", "news"],
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   }),
+  components: { AddProvider, _ProviderDashboard },
 };
 </script>
 <style>

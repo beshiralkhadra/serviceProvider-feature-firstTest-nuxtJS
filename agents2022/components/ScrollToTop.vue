@@ -8,7 +8,7 @@
       fixed
       bottom
       right
-      color="primary"
+      color="#009688"
       @click="toTop"
     >
       <v-icon class="white--text">mdi-arrow-up</v-icon>

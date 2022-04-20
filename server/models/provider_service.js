@@ -52,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       providerId: {
+        type: DataTypes.INTEGER,
+      },
+      providerUuid: {
         type: DataTypes.UUID,
       },
       serviceId: {

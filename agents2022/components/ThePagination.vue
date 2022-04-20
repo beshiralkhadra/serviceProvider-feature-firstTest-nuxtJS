@@ -5,6 +5,7 @@
       :length="parseInt($store.getters.getPageLength)"
       @input="handlePageChange"
       total-visible="4"
+      color="#009688"
       circle
     ></v-pagination>
     {{ getPage }}

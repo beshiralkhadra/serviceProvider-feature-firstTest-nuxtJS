@@ -1,6 +1,7 @@
 const Provider = {
   // namespaced: true,
   state: {
+    getMaxUuid: "",
     info: [],
     servicesInfo: [],
     selectedCategory: null,
@@ -13,9 +14,18 @@ const Provider = {
     e1: 1,
     page: 1,
     pageLength: "",
+    idForProviderWhoIn: "",
+    specilityForProviderWhoIn: "",
+    specilityForProviderWhoInElipse: "",
+    getAllAppointmentsForSpecificProvider: [],
+    getAllServicesForUpdateForm: [],
+    getAllServicesForUpdateFormInElipse: [],
   },
 
   mutations: {
+    SET_MAX_UUID(state, payload) {
+      return (state.getMaxUuid = payload);
+    },
     SET_INFO(state, payload) {
       return (state.info = payload);
     },
@@ -29,7 +39,7 @@ const Provider = {
       return (state.getAllServicesWithProviders = payload);
     },
     SET_PAGE_NUMBER(state, payload) {
-      console.log(payload);
+      // console.log(payload);
       return (state.page = payload);
     },
     SET_PAGE_LENGTH(state, payload) {
@@ -54,8 +64,39 @@ const Provider = {
     SET_E1(state, payload) {
       return (state.e1 = payload);
     },
+    ///////////////////////////mutations for provider page
+    SET_PROVIDER_ID(state, payload) {
+      return (state.idForProviderWhoIn = payload);
+    },
+    SET_PROVIDER_SPECIALITY(state, payload) {
+      return (state.specilityForProviderWhoIn = payload);
+    },
+    SET_PROVIDER_SPECIALITY_ELIPSE(state, payload) {
+      console.log(payload);
+      return (state.specilityForProviderWhoInElipse = payload);
+    },
+    SET_ALL_APPOINTMENTS(state, payload) {
+      return (state.getAllAppointmentsForSpecificProvider = payload);
+    },
+    SET_SERVICES_FOR_UPDATE_FORM(state, payload) {
+      return (state.getAllServicesForUpdateForm = payload);
+    },
+    SET_SERVICES_FOR_UPDATE_FORM_IN_ELIPSE(state, payload) {
+      return (state.getAllServicesForUpdateFormInElipse = payload);
+    },
   },
   actions: {
+    ///get max uuid
+    getMaxUuidAction({ commit, dispatch }) {
+      try {
+        this.$axios.get("/providers/getMaxUuid").then((resp) => {
+          commit("SET_MAX_UUID", resp.data);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     /// get provider actions
     getProviders({ commit, dispatch }) {
       try {
@@ -114,6 +155,26 @@ const Provider = {
     setWhatRole({ commit }, payload) {
       commit("SET_LISTING_PROVIDERS", payload);
     },
+    //actions for provider page
+    setIdForProvider({ commit }, payload) {
+      commit("SET_PROVIDER_ID", payload);
+      console.log(payload);
+    },
+    getAllAppointmentsForSpecificProvider({ commit, state }, payload) {
+      try {
+        this.$axios
+          .post("/providers/getAllAppointmentsForSpecificProvider", {
+            specifyId: state.idForProviderWhoIn,
+          })
+          .then((resp) => {
+            console.log(resp.data);
+            commit("SET_ALL_APPOINTMENTS", resp.data.reverse());
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /////////////////////////////////////
     async bringAllProvidersWithSameRole({ commit, state }, payload) {
       try {
         await this.$axios
@@ -132,9 +193,46 @@ const Provider = {
         console.log(error);
       }
     },
+    ////////////////////
+    async bringAllServicesForUpdateForm({ commit, state }, payload) {
+      try {
+        await this.$axios
+          .post("/providers/bringAllServicesForUpdateForm", {
+            specifySpeciality: state.specilityForProviderWhoIn,
+          })
+          .then((resp) => {
+            console.log(resp);
+            commit("SET_SERVICES_FOR_UPDATE_FORM", resp.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    ////////////////////
+    async bringAllServicesForUpdateFormInElipseAction(
+      { commit, state },
+      payload
+    ) {
+      try {
+        await this.$axios
+          .post("/providers/bringAllServicesForUpdateFormInElipse", {
+            specifySpeciality: state.specilityForProviderWhoInElipse,
+          })
+          .then((resp) => {
+            console.log(resp);
+            commit("SET_SERVICES_FOR_UPDATE_FORM_IN_ELIPSE", resp.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   getters: {
+    getMaxUuid(state) {
+      console.log(state.getMaxUuid, "llllllllllllllllllllllllllllll");
+      return state.getMaxUuid;
+    },
     info(state) {
       return state.info;
     },
@@ -169,6 +267,19 @@ const Provider = {
     },
     getPageLength(state) {
       return state.pageLength;
+    },
+    ///////////////////////////////getters for provider page
+    idForProviderWhoIn(state) {
+      return state.idForProviderWhoIn;
+    },
+    bringAllAppointmentsForSpecificProvider(state) {
+      return state.getAllAppointmentsForSpecificProvider;
+    },
+    bringAllServicesForUpdateForm(state) {
+      return state.getAllServicesForUpdateForm;
+    },
+    bringAllServicesForUpdateFormInElipse(state) {
+      return state.getAllServicesForUpdateFormInElipse;
     },
   },
 };

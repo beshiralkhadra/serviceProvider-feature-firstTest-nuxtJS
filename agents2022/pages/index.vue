@@ -24,15 +24,14 @@ export default {
       categoryData: data,
     };
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 <style scoped>
 .header-doctors {
   text-align: center;
   font-weight: bold;
-  color: #1976d2;
+  color: #009688;
   display: flex;
   justify-content: center;
   border-bottom: solid;

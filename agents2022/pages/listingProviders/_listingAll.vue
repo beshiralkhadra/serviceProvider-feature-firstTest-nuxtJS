@@ -14,7 +14,7 @@
         </h2>
       </div>
     </v-parallax>
-    <v-toolbar class="blue lighten-1" height="100vh">
+    <v-toolbar color="#35b5ac" height="100vh">
       <v-row class="justify-center align-center">
         <v-icon class="mr-5" large color="white" right>
           mdi-account-box
@@ -44,6 +44,7 @@
             :items="items"
             outlined
             class="mb-5"
+            color="#35b5ac"
             label="Filter based on category"
             hide-details
           ></v-autocomplete>
@@ -69,8 +70,14 @@
         <!-- //////////////////////////////////////////////// -->
 
         <div style="width: 80%">
-          <v-row v-if="myAllProvidersWithSameRole.length != 0">
-            <CardsForListing
+          <v-row v-if="myAllProvidersWithSameRole.length != 0" style="gap: 1em">
+            <!-- <CardsForListing
+              v-for="(showAllProviders, index) in myAllProvidersWithSameRole"
+              :key="showAllProviders.id"
+              :showAllProviders="showAllProviders"
+              :index_of_array="index"
+            /> -->
+            <TestingCard
               v-for="(showAllProviders, index) in myAllProvidersWithSameRole"
               :key="showAllProviders.id"
               :showAllProviders="showAllProviders"
@@ -82,7 +89,7 @@
             class="justify-center align-center"
             style="height: 50vh"
           >
-            <h1 class="blue--text">
+            <h1 class="teal--text">
               THERE IS NO {{ $route.params.listingAll }}
             </h1>
           </v-row>
@@ -101,7 +108,7 @@
         <!-- <SearchBar @getOnchange="getOnchange"/> -->
       </v-row>
     </v-container>
-    <ThePagination :sendWhichPage="$route.params.listingAll" class="ma-7" />
+    <ThePagination :sendWhichPage="$route.params.listingAll" class="ma-12" />
   </v-container>
 </template>
 
@@ -110,6 +117,7 @@ import CardsForListing from "../../components/cards/cardsForListing.vue";
 import SearchBar from "../../components/searchBar.vue";
 import ScrollToTop from "../../components/ScrollToTop.vue";
 import ThePagination from "../../components/ThePagination.vue";
+import TestingCard from "../../components/cards/TestingCard.vue";
 export default {
   // layout: "listingProviders",
   name: "IndexPage",
@@ -165,7 +173,7 @@ export default {
               .every((v) => item.firstName.toLowerCase().includes(v));
           });
         if (savingAllProviders.length == 0) {
-          console.log(savingAllProviders);
+          // console.log(savingAllProviders);
           return savingAllProviders;
         } else {
           return savingAllProviders;
@@ -191,7 +199,13 @@ export default {
       }
     },
   },
-  components: { CardsForListing, SearchBar, ScrollToTop, ThePagination },
+  components: {
+    CardsForListing,
+    SearchBar,
+    ScrollToTop,
+    ThePagination,
+    TestingCard,
+  },
 };
 </script>
 <style scoped>

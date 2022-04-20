@@ -15,7 +15,7 @@ module.exports = {
       },
       providerId: {
         type: Sequelize.INTEGER,
-        references: { model: "providers", key: "uuid" },
+        references: { model: "providers", key: "id" },
         onDelete: "CASCADE",
       },
       serviceId: {

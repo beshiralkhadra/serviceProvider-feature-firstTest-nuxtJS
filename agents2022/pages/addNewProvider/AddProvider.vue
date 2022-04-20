@@ -145,9 +145,9 @@
           </v-select>
           <!-------------------------------------------------------------------------- next btn  -->
           <v-row class="justify-end" no-gutters>
-            <v-btn @click="onSubmit" type="submit" class="primary ma-3" dark>
+            <v-btn @click="onSubmit" type="submit" color="#35b5ac" dark>
               Next
-              <v-icon dark left> mdi-arrow-right </v-icon>
+              <v-icon class="white--text" left> mdi-arrow-right </v-icon>
             </v-btn>
           </v-row>
         </v-form>
@@ -161,7 +161,6 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AddProvider",
-
   data() {
     return {
       ////////////////////////////////////////////////////////// names
@@ -197,10 +196,8 @@ export default {
       //   (v) => !!v || "Password is required",
       //   (v) => v == this.password || "Password is required",
       // ],
-
       ///////////////////////////////////////////////////////// mobile number
       phone: "",
-
       phoneRules: [
         (v) => !!v || "Phone is required",
         (v) => v != /^\d{10}$/.test(v) || "Phone not correct",
@@ -214,7 +211,6 @@ export default {
       image: "",
     };
   },
-
   mounted() {
     this.$store.dispatch("getRoles");
   },
@@ -223,16 +219,14 @@ export default {
   },
   methods: {
     ...mapActions(["setMajor"]),
-
     onSubmit(e) {
-      let role_id = null;
       e.preventDefault();
+      let role_id = null;
       this.getAllRoles.forEach((element) => {
         if (this.role == element.role_name) {
           role_id = element.id;
         }
       });
-
       this.setMajor(this.major);
       if (this.$refs.form.validate()) {
         this.$axios
@@ -243,8 +237,7 @@ export default {
             age: this.age,
             gender: this.gender,
             phone: this.phone,
-            // email: this.email,
-            // password: this.password,
+
             education: this.education,
             major: this.major,
             minor: this.minor,

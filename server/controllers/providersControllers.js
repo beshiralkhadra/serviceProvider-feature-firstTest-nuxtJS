@@ -7,19 +7,41 @@ const Provider_Service = require("../models").Provider_Service;
 const Role = require("../models").Role;
 
 const getAllProviders = (req, res) => {
-  const { uuid } = req.body;
-  let condition = uuid ? { uuid: { [Op.eq]: uuid } } : null;
-  Provider.findAll({
-    where: condition,
-  })
-    .then((resp) => res.send(resp))
-    .catch((err) => res.send(err));
+  const { id, RoleId } = req.body;
+  if (id) {
+    let condition = id ? { id: { [Op.eq]: id }, status: "latest" } : null;
+    Provider.findAll({
+      where: condition,
+    })
+      .then((resp) => res.send(resp))
+      .catch((err) => res.send(err));
+  } else if (RoleId) {
+    let condition = RoleId
+      ? { RoleId: { [Op.eq]: RoleId }, status: "latest" }
+      : null;
+    Provider.findAll({
+      where: condition,
+    })
+      .then((resp) => res.send(resp))
+      .catch((err) => res.send(err));
+  } else {
+    Provider.findAll({
+      where: {
+        status: "latest",
+      },
+    })
+      .then((resp) => res.send(resp))
+      .catch((err) => res.send(err));
+  }
 };
+
+/////////////////////////////////////////////
 const getAllRoles = (req, res) => {
   Role.findAll()
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
+//////////////////////////////////////////
 const getAllServices = (req, res) => {
   const { providerId } = req.body;
   let condition = providerId ? { providerId: { [Op.eq]: providerId } } : null;
@@ -29,23 +51,20 @@ const getAllServices = (req, res) => {
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
+//////////////////////////////////////////
 const getAllWorkingHours = (req, res) => {
-  const { ProviderUuid } = req.body;
-  let condition = ProviderUuid
-    ? { ProviderUuid: { [Op.eq]: ProviderUuid } }
-    : null;
+  const { ProviderId } = req.body;
+  let condition = ProviderId ? { ProviderId: { [Op.eq]: ProviderId } } : null;
   Day.findAll({
     where: condition,
   })
     .then((resp) => {
-      // console.log(resp, "/././././././././././././././.");
       let wholeArrayForWorkingHours = [];
       for (let i = 0; i < resp.length; i++) {
         let workingHoursForEachProvider = {};
-        workingHoursForEachProvider.ProviderUuid =
-          resp[i].dataValues.ProviderUuid;
+        workingHoursForEachProvider.ProviderId = resp[i].dataValues.ProviderId;
         workingHoursForEachProvider.sunday = {
-          from: resp[i].dataValues.sunday_first,
+          from: resp[i].dataValues.sundayT1,
           to: resp[i].dataValues.sundayT2,
         };
         workingHoursForEachProvider.monday = {
@@ -78,7 +97,7 @@ const getAllWorkingHours = (req, res) => {
     })
     .catch((err) => res.send(err));
 };
-
+///////////////////////////////////
 const createCat = (req, res) => {
   const { major } = req.body;
   Service.findAll({
@@ -91,20 +110,21 @@ const createCat = (req, res) => {
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
+////////////////////////////////////////////
 const bringAllProvidersWithSameRole = (req, res) => {
   const { specifyRole, pageNumber } = req.body;
-  // console.log(specifyRole, "/./././././././././././.");
-  let perPage = 4;
+  // console.log(specifyRole);
+  let perPage = 6;
   let parsePageNumber = parseInt(pageNumber);
   Provider.findAndCountAll({
-    where: { RoleId: specifyRole },
+    where: { RoleId: specifyRole, status: "latest" },
     limit: perPage,
     offset: perPage * (parsePageNumber - 1),
   })
     .then((resp) => res.send(resp))
     .catch((err) => res.send(err));
 };
-
+/////////////////////////////////////////
 const addOne = (req, res) => {
   const {
     username,
@@ -131,12 +151,25 @@ const addOne = (req, res) => {
     .then((resp) => res.send({ message: "Added Successfully" }))
     .catch((err) => res.send(err));
 };
-const addHours = (req, res) => {
+/////////////////////////////////////////////////////
+///get max uuid
+const getMaxUuid = (req, res) => {
   Provider.findOne({
     order: [["uuid", "DESC"]],
   })
     .then((resp) => {
+      res.send(resp._previousDataValues.uuid);
+    })
+    .catch((err) => res.send(err));
+};
+/////////////////////////////
+const addHours = (req, res) => {
+  Provider.findOne({
+    order: [["createdAt", "DESC"]],
+  })
+    .then((resp) => {
       const {
+        providerUuid,
         sundayT1,
         sundayT2,
         mondayT1,
@@ -152,11 +185,11 @@ const addHours = (req, res) => {
         saturdayT1,
         saturdayT2,
       } = req.body;
-      let maxId = resp._previousDataValues.uuid;
-      console.log(maxId, "/././././././././././././././././.");
+      let maxId = resp._previousDataValues.id;
       Day.create({
-        ProviderUuid: maxId,
-        sunday_first: sundayT1,
+        ProviderId: maxId,
+        providerUuid: providerUuid,
+        sundayT1: sundayT1,
         sundayT2: sundayT2,
         mondayT1: mondayT1,
         mondayT2: mondayT2,
@@ -176,18 +209,19 @@ const addHours = (req, res) => {
     })
     .catch((err) => res.send(err));
 };
+////////////////////////////////////////////////
 const createService = (req, res) => {
   Provider.findOne({
-    order: [["uuid", "DESC"]],
+    order: [["createdAt", "DESC"]],
   })
     .then((resp) => {
-      const { selectedServices } = req.body;
-      let maxId = resp._previousDataValues.uuid;
-      console.log(maxId, "//./././././././././././.....................");
+      const { selectedServices, providerUuid } = req.body;
+      let maxId = resp._previousDataValues.id;
       let wholeServiceObject = [];
       selectedServices.map((looping) => {
         let serviceObj = {
           providerId: maxId,
+          providerUuid: providerUuid,
           serviceId: looping.id,
           service_name: looping.service_name,
         };
@@ -201,17 +235,130 @@ const createService = (req, res) => {
     })
     .catch((err) => res.send(err));
 };
+////////////////////////////////////////////////////////////
+///update provider information
+const updateProviderInformation = async (req, res) => {
+  const { providerId, status, selectedUpdatedServices } = req.body;
+  // console.log(
+  //   providerId,
+  //   selectedUpdatedServices,
+  //   "lllllllllllllllllllllllllllllllllllllllll"
+  // );
+  const provider = await Provider.update(
+    {
+      status: status,
+    },
+    { where: { id: providerId } }
+  );
+  let wholeServiceObject = [];
 
-// const updateDay = async (req, res) => {
-//   const {updatedDay} =req.body;
-//   console.log(updatedDay)
-//    const provider = await Day.update({off_sunday:true}, { where : { id:updatedDay}}
-//    ).catch(err => console.log(err));
-//    console.log(provider)
-//   };
+  selectedUpdatedServices.map((looping) => {
+    let serviceObj = {
+      providerId: providerId,
+      serviceId: looping.id,
+      service_name: looping.service_name,
+    };
+    wholeServiceObject.push(serviceObj);
+  });
+  Provider_Service.bulkCreate(wholeServiceObject, {
+    updateOnDuplicate: ["service_name", "serviceId"],
+  }).catch((err) => console.log(err));
+};
+///add same provider with new information
+
+const addNewRecordSameProvider = (req, res) => {
+  const {
+    uuid,
+    username,
+    lastName,
+    age,
+    gender,
+    phone,
+    education,
+    major,
+    minor,
+    role_id,
+  } = req.body;
+
+  Provider.create({
+    uuid: uuid,
+    firstName: username,
+    lastName: lastName,
+    age: age,
+    gender: gender,
+    phone: phone,
+    education: education,
+    major: major,
+    minor: minor,
+    RoleId: role_id,
+  })
+    .then((resp) => resp.send({ message: "Provider updated and added" }))
+    .catch((err) => console.log(err, "ppppppppppppppppppppppppppppppp"));
+};
+//////////////////////////////////////////////////////
+const findAllServicesForUpdate = (req, res) => {
+  const { category } = req.body;
+  Service.findAll({
+    where: {
+      category: {
+        [Op.or]: [category, "defaultCate"],
+      },
+    },
+  })
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
+///////////////////////////////////////////delete provider
+// const deleteProvider = (req, res) => {
+//   Provider.destroy({
+//     where: {
+//       uuid: req.params.uuid,
+//     },
+//   })
+//     .then((resp) => console.log(resp))
+//     .catch((err) => res.send(err));
+// };
+const deleteProvider = async (req, res) => {
+  const { status, providerId } = req.body;
+  // console.log(status);
+  const provider = await Provider.update(
+    {
+      status: status,
+    },
+    { where: { id: providerId } }
+  )
+    .then((resp) => res.send({ message: "Provider Deleted" }))
+
+    .catch((err) => console.log(err));
+};
+///get all services related to update form
+const bringAllServicesForUpdateForm = (req, res) => {
+  const { specifySpeciality } = req.body;
+  Service.findAll({
+    where: {
+      category: specifySpeciality,
+    },
+  })
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
+///get all services related to update form in elipse
+const bringAllServicesForUpdateFormInElipse = (req, res) => {
+  const { specifySpeciality } = req.body;
+  // console.log(specifySpeciality, "ggggggggggggggggggggggggggggg");
+  Service.findAll({
+    where: {
+      category: specifySpeciality,
+    },
+  })
+    .then((resp) => res.send(resp))
+    .catch((err) => res.send(err));
+};
+
 module.exports = {
   getAllProviders,
   addOne,
+  getMaxUuid,
   addHours,
   createCat,
   createService,
@@ -219,4 +366,10 @@ module.exports = {
   getAllRoles,
   getAllWorkingHours,
   getAllServices,
+  updateProviderInformation,
+  findAllServicesForUpdate,
+  deleteProvider,
+  bringAllServicesForUpdateForm,
+  bringAllServicesForUpdateFormInElipse,
+  addNewRecordSameProvider,
 };
