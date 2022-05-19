@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="padding: 0">
-    <v-app-bar width="100%" height="60vh" class="blue lighten-5" elevation="1">
+    <v-app-bar width="100%" height="60vh" class="teal lighten-5" elevation="1">
       <v-row class="d-flex justify-space-around">
         <!-- <v-img
           lazy-src="https://picsum.photos/id/11/10/6"
@@ -9,8 +9,10 @@
           class="rounded-circle"
           src="https://picsum.photos/id/11/500/300"
         ></v-img> -->
-        <p style="font-weight: 600;">
-          <span style="color:#3EB8D7">Agents</span><span style="color:#138bbf">On</span><span style="color:#2c599d">Cloud</span>
+        <p style="font-weight: 600">
+          <span style="color: #80cbc4">Agents</span
+          ><span style="color: #35b5ac">On</span
+          ><span style="color: #248585">Cloud</span>
         </p>
         <ul class="nav-list">
           <li class="nav-item">
@@ -18,9 +20,7 @@
           </li>
         </ul>
 
-        <v-btn class="blue darken-4 white--text" @click="registerBtn">
-          Register
-        </v-btn>
+        <v-btn class="teal white--text" @click="registerBtn"> Register </v-btn>
       </v-row>
     </v-app-bar>
   </v-container>
@@ -52,5 +52,6 @@ export default {
 }
 .nuxtLink {
   text-decoration: none;
+  color: #248585;
 }
 </style>

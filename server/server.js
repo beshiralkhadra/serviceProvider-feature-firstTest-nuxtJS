@@ -12,8 +12,16 @@ const router = require("./routes/app");
 
 app.use("/", router);
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Accept, Content-Type, Authorization, X-Requested-With"
+  );
+  next();
+});
 const port = process.env.port;
 app.listen(port, async () => {
-  console.log("hello to my server http://localhost:" + port);
+  console.log("hello to http://localhost:" + port);
   await db.sequelize.sync();
 });

@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+      options {
+        ansiColor('xterm')
+    }
+    stages {      
+         stage('Build') {
+            steps {
+            sshPublisher(
+            continueOnError: false, failOnError: true,
+            publishers: [
+                sshPublisherDesc(
+                configName: "dev server",
+                verbose: true,
+                transfers: [
+                sshTransfer(
+                        execCommand:"cd /var/www/ && rm -rf web.appointments.agentsoncloud.com"
+                    ),
+                    sshTransfer(
+                        sourceFiles: "**/*",
+                        remoteDirectory: "web.appointments.agentsoncloud.com",
+                        execCommand:"cd /var/www/web.appointments.agentsoncloud.com && sudo npm i"
+                )
+             ])
+            ])
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo ("Test Stage")
+            }
+        }
+        stage('Deploy') {
+            steps {    
+            sshPublisher(
+            continueOnError: false, failOnError: true,
+            publishers: [
+                sshPublisherDesc(
+                configName: "dev server",
+                verbose: true,
+                transfers: [
+               sshTransfer(
+                        execCommand: "cd /var/www/web.appointments.agentsoncloud.com && npm run build && pm2 start"
+                         )
+                ])
+            ])
+            }
+        }
+    }
+    ///
+     post {
+        always {
+           slackSend channel: "#development-jenkins", message: "${env.JOB_NAME} Release 1 - #${env.BUILD_NUMBER} : Started . ",color:"good"
+        }
+        success {
+          slackSend channel: "#development-jenkins", message: "${env.JOB_NAME} Release 1 - #${env.BUILD_NUMBER} : Build Finshed Success . ",color:"good"
+        }
+        unstable {
+           slackSend channel: "#development-jenkins", message: "${env.JOB_NAME} Release 1 - #${env.BUILD_NUMBER} : Build have Error  . ", color:"warning"
+        }
+        failure {
+            slackSend channel: "#development-jenkins", message: "${env.JOB_NAME} Release 1 - #${env.BUILD_NUMBER} : Failure Build  . ",color:"danger"
+        }
+        changed {
+             echo 'Things were different before...'
+        }
+    }
+}
+///

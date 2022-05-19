@@ -363,7 +363,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$axios
           .post("/providers/createCat", {
-            major: this.selectedCategory,
+            minor: this.selectedCategory,
           })
           .then(
             (response) => this.setServicesState(response.data),

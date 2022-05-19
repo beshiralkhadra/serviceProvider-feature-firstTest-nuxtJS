@@ -41,30 +41,17 @@
                   </div>
 
                   <!---------------------------------------------- educations fields  -->
-                  <div class="d-flex">
-                    <v-col md="6">
-                      <v-text-field
-                        v-model="specialityForProvider"
-                        type="text"
-                        name="major"
-                        label="Speciality"
-                        :placeholder="specialityForProvider"
-                        required
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                    <v-col md="6">
-                      <v-text-field
-                        v-model="minorForProvider"
-                        type="text"
-                        name="minor"
-                        label="Minor"
-                        :placeholder="minorForProvider"
-                        required
-                        hide-details
-                      ></v-text-field>
-                    </v-col>
-                  </div>
+                  <v-col md="12">
+                    <v-select
+                      v-model="minor"
+                      :items="getAllCategoriessFromApi.categories"
+                      item-text="category_name"
+                      label="choose category..."
+                      :placeholder="minorForProvider"
+                      hide-details
+                    >
+                    </v-select>
+                  </v-col>
                   <v-col md="12">
                     <v-select
                       v-model="role"
@@ -78,10 +65,11 @@
                   <v-col cols="12">
                     <v-select
                       v-model="selectedUpdatedServices"
-                      :items="bringAllServicesForUpdateFormInElipse"
+                      :items="getAllServicesFromApi.Services"
                       item-text="service_name"
                       label="Select"
                       multiple
+                      return-object
                       chips
                       hide-details
                     ></v-select>
@@ -110,7 +98,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 import PopupSuccess from "../../components/PopupSuccess.vue";
 export default {
@@ -123,10 +111,25 @@ export default {
     idForProvider: {
       type: String,
     },
+    uuidForProviderIn: {
+      type: String,
+    },
     nameForProvider: {
       type: String,
     },
+    lastNameForProviderIn: {
+      type: String,
+    },
+    ageForProviderIn: {
+      type: String,
+    },
+    genderForProviderIn: {
+      type: String,
+    },
     phoneForProvider: {
+      type: String,
+    },
+    educationForProviderIn: {
       type: String,
     },
     specialityForProvider: {
@@ -136,8 +139,14 @@ export default {
       type: String,
     },
   },
-  mounted() {
-    this.$store.dispatch("bringAllServicesForUpdateFormInElipseAction");
+  async mounted() {
+    try {
+      this.$store.dispatch("actionForGetAllServicesFromApi");
+      this.actionForGetAllCategoriesFromApi();
+      await this.$store.dispatch("getRoles");
+    } catch (e) {
+      console.log(e);
+    }
   },
   data() {
     return {
@@ -177,20 +186,70 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["actionForGetAllCategoriesFromApi"]),
     updateProviderInformation(e) {
       e.preventDefault();
+      console.log(this.selectedUpdatedServices);
+      let role_id = null;
+      if (this.getAllRole != []) {
+        this.getAllRoles.forEach((element) => {
+          if (this.role == element.role_name) {
+            role_id = element.id;
+          }
+        });
+      }
+      try {
+        this.$axios
+          .put("/providers/updateProviderInformation", {
+            providerId: this.idForProvider,
+            status: "updated",
+            selectedUpdatedServices: this.selectedUpdatedServices,
+          })
+          .then((res) => {
+            console.log("تم وصلت 1", res);
+          });
+      } catch (e) {
+        console.log(e);
+      }
 
-      this.$axios
-        .put("/providers/updateProviderInformation", {
-          newNameForProvider: this.nameForProvider,
-          phone: this.phoneForProvider,
-          speciality: this.specialityForProvider,
-          minor: this.minorForProvider,
-          providerId: this.idForProvider,
-          selectedUpdatedServices: this.selectedUpdatedServices,
-        })
-        .then((res) => console.log(res.data, " تم وصلت"));
+      ////////////////////
+      // console.log("ppppppppppppppppppppppppppppppp");
+      this.$axios.post("/providers/addNewRecordSameProvider", {
+        role_id: role_id,
+        uuid: this.uuidForProviderIn,
+        username: this.nameForProvider,
+        lastName: this.lastNameForProviderIn,
+        age: this.ageForProviderIn,
+        gender: this.genderForProviderIn,
+        phone: this.phoneForProvider,
+        education: this.educationForProviderIn,
+        major: this.specialityForProvider,
+        minor: this.minorForProvider,
+      });
+      try {
+        this.$axios
+          .put("/providers/updateRelatedTables", {
+            newProviderId: this.idForProvider,
+            providerUuid: this.uuidForProviderIn,
+          })
+          .then((res) =>
+            console.log(res, "record has been updated in leaves table")
+          );
+      } catch (e) {
+        console.log(e);
+      }
 
+      // this.$axios
+      //   .put("/providers/updateProviderInformation", {
+      //     newNameForProvider: this.nameForProvider,
+      //     phone: this.phoneForProvider,
+      //     speciality: this.specialityForProvider,
+      //     minor: this.minorForProvider,
+      //     providerId: this.idForProvider,
+      //     selectedUpdatedServices: this.selectedUpdatedServices,
+      //   })
+      //   .then((res) => this.$store.dispatch("bringAllProvidersWithSameRole"));
+      // console.log("ddddddddddddddddddddddddddddddddddddddddddddddd");
       this.dialog2 = true;
       this.showDialog = false;
     },
@@ -204,7 +263,11 @@ export default {
     assignDialog() {
       this.showDialog = this.dialog;
     },
-    ...mapGetters(["getAllRoles", "bringAllServicesForUpdateFormInElipse"]),
+    ...mapGetters([
+      "getAllRoles",
+      "getAllServicesFromApi",
+      "getAllCategoriessFromApi",
+    ]),
   },
   components: { PopupSuccess },
 };

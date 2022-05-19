@@ -3,37 +3,142 @@
 <template>
   <div v-if="getAllHours.length > 0">
     <div class="card">
-      <div class="card-img" @click="movingToProviderProfileBtn">
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiCoHLktPNbzYjYcrFoYnlmxX5SfRKCIJQsA&usqp=CAU"
-          alt=""
-          srcset=""
-        />
-      </div>
-      <div class="card-body">
-        <div class="card-option">
-          <h3 class="font-weight-bold">{{ showAllProviders.firstName }}</h3>
-          <TheElipsesMenu
-            @deleteBtn="deleteBtn(showAllProviders.id)"
-            @updateBtn="updateBtn"
-          />
-        </div>
-        <UpdateDialog
-          :dialog.sync="dialog"
-          :idForProvider="idForProvider"
-          :nameForProvider="nameForProvider"
-          :phoneForProvider="phoneForProvider"
-          :specialityForProvider="specialityForProvider"
-          :minorForProvider="minorForProvider"
-        />
-        <DeleteDialog :dialog3.sync="dialog3" />
-        <!-- <div v-if="deletedBtn">
-          <PopupSuccess />
-        </div> -->
-        <h5>{{ showAllProviders.major }}</h5>
-        <hr class="teal lighten-5 mt-2" />
-        <!-- ///////////////////////////////// -->
-        <!-- {{ getServicesRelatedToProvider }}
+      <v-col md="12">
+        <v-row>
+          <v-col md="6">
+            <div class="card-img" @click="movingToProviderProfileBtn">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiCoHLktPNbzYjYcrFoYnlmxX5SfRKCIJQsA&usqp=CAU"
+                alt=""
+                srcset=""
+              />
+            </div>
+          </v-col>
+          <v-col md="6">
+            <div class="card-option">
+              <v-row class="flex-column">
+                <h3 class="font-weight-bold">
+                  {{ showAllProviders.firstName }}
+                </h3>
+                <h5>{{ showAllProviders.minor }}</h5>
+              </v-row>
+
+              <TheElipsesMenu
+                @deleteBtn="deleteBtn(showAllProviders.id)"
+                @updateBtn="updateBtn"
+              />
+              <UpdateDialog
+                :dialog.sync="dialog"
+                :idForProvider="idForProvider"
+                :uuidForProviderIn="uuidForProviderIn"
+                :nameForProvider="nameForProvider"
+                :lastNameForProviderIn="lastNameForProviderIn"
+                :ageForProviderIn="ageForProviderIn"
+                :genderForProviderIn="genderForProviderIn"
+                :phoneForProvider="phoneForProvider"
+                :educationForProviderIn="educationForProviderIn"
+                :specialityForProvider="specialityForProvider"
+                :minorForProvider="minorForProvider"
+              />
+              <DeleteDialog :dialog3.sync="dialog3" />
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+      <hr class="teal lighten-5 mb-3" />
+
+      <v-col md="12">
+        <v-row>
+          <v-col md="6" class="mb-3">
+            <v-row>
+              <span class="colors-days mr-3 font-weight-bold"> Sunday</span>
+              <span class="hours-color">
+                {{ getAllHours[index_of_array].sunday.from }}--{{
+                  getAllHours[index_of_array].sunday.to
+                }}
+              </span>
+            </v-row>
+          </v-col>
+          <v-col md="6">
+            <v-row>
+              <span class="colors-days mr-3 font-weight-bold" color="#009688">
+                Monday</span
+              >
+              <span class="hours-color" color="#009688">
+                {{ getAllHours[index_of_array].monday.from }}--{{
+                  getAllHours[index_of_array].monday.to
+                }}</span
+              >
+            </v-row></v-col
+          >
+          <v-col md="6" class="mb-3">
+            <v-row>
+              <span class="colors-days mr-3 font-weight-bold" color="#009688">
+                Tuesday</span
+              >
+
+              <span color="#009688" class="hours-color">
+                {{ getAllHours[index_of_array].tuesday.from }}--{{
+                  getAllHours[index_of_array].tuesday.to
+                }}</span
+              >
+            </v-row>
+          </v-col>
+          <v-col md="6">
+            <v-row>
+              <span class="colors-days mr-2 font-weight-bold" color="#009688">
+                Wednes.</span
+              >
+
+              <span color="#009688" class="hours-color">
+                {{ getAllHours[index_of_array].wednesday.from }}--{{
+                  getAllHours[index_of_array].wednesday.to
+                }}</span
+              >
+            </v-row>
+          </v-col>
+
+          <v-col md="6" class="mb-3">
+            <v-row>
+              <span class="colors-days mr-3 font-weight-bold" color="#009688">
+                Thur.</span
+              >
+              <span color="#009688" class="hours-color">
+                {{ getAllHours[index_of_array].thursday.from }}--{{
+                  getAllHours[index_of_array].thursday.to
+                }}</span
+              >
+            </v-row>
+          </v-col>
+          <v-col md="6">
+            <v-row>
+              <span class="colors-days mr-3 font-weight-bold" color="#009688">
+                Friday</span
+              >
+              <span color="#009688" class="hours-color">
+                {{ getAllHours[index_of_array].friday.from }}--{{
+                  getAllHours[index_of_array].friday.to
+                }}</span
+              >
+            </v-row>
+          </v-col>
+          <v-col md="6">
+            <v-row>
+              <p class="colors-days mr-3 font-weight-bold" color="#009688">
+                Satur.
+              </p>
+              <span color="#009688" class="hours-color">
+                {{ getAllHours[index_of_array].saturday.from }}--{{
+                  getAllHours[index_of_array].saturday.to
+                }}</span
+              >
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <!-- ///////////////////////////////// -->
+      <!-- {{ getServicesRelatedToProvider }}
         <v-row v-for="service in allServices">
           <p
             class="text-categories font-weight-bold black--text"
@@ -43,74 +148,7 @@
             <span class="font-weight-regular">{{ service.service_name }}</span>
           </p>
         </v-row> -->
-        <!-- ///////////////////////////////////////////////// -->
-        <v-row class="workingHours-card mt-3">
-          <span class="colors-days pr-3 font-weight-bold"> Sunday</span>
-          <span class="hours-color pr-6">
-            {{ getAllHours[index_of_array].sunday.from }}--{{
-              getAllHours[index_of_array].sunday.to
-            }}
-          </span>
-
-          <span class="colors-days pr-3 font-weight-bold" color="#009688">
-            Monday</span
-          >
-          <span class="hours-color" color="#009688">
-            {{ getAllHours[index_of_array].monday.from }}--{{
-              getAllHours[index_of_array].monday.to
-            }}</span
-          >
-        </v-row>
-        <v-row class="workingHours-card">
-          <span class="colors-days mr-3 font-weight-bold" color="#009688">
-            Tuesday</span
-          >
-          <span color="#009688" class="hours-color mr-6">
-            {{ getAllHours[index_of_array].tuesday.from }}--{{
-              getAllHours[index_of_array].tuesday.to
-            }}</span
-          >
-
-          <span class="colors-days pr-3 font-weight-bold" color="#009688">
-            Wednesday</span
-          >
-          <span color="#009688" class="hours-color">
-            {{ getAllHours[index_of_array].wednesday.from }}--{{
-              getAllHours[index_of_array].wednesday.to
-            }}</span
-          >
-        </v-row>
-        <v-row class="workingHours-card">
-          <span class="colors-days mr-3 font-weight-bold" color="#009688">
-            Thursday</span
-          >
-          <span color="#009688" class="hours-color pr-6">
-            {{ getAllHours[index_of_array].thursday.from }}--{{
-              getAllHours[index_of_array].thursday.to
-            }}</span
-          >
-
-          <span class="colors-days pr-3 font-weight-bold" color="#009688">
-            Friday</span
-          >
-          <span color="#009688" class="hours-color">
-            {{ getAllHours[index_of_array].friday.from }}--{{
-              getAllHours[index_of_array].friday.to
-            }}</span
-          >
-        </v-row>
-        <v-row class="workingHours-card">
-          <span class="colors-days pr-3 font-weight-bold" color="#009688">
-            Saturday</span
-          >
-          <span color="#009688" class="hours-color">
-            {{ getAllHours[index_of_array].saturday.from }}--{{
-              getAllHours[index_of_array].saturday.to
-            }}</span
-          >
-        </v-row>
-        <div class="card-body-footer"></div>
-      </div>
+      <!-- ///////////////////////////////////////////////// -->
     </div>
   </div>
 </template>
@@ -139,8 +177,13 @@ export default {
       dialog: false,
       dialog3: false,
       idForProvider: "",
+      uuidForProviderIn: "",
       nameForProvider: "",
+      lastNameForProviderIn: "",
+      ageForProviderIn: "",
+      genderForProviderIn: "",
       phoneForProvider: "",
+      educationForProviderIn: "",
       specialityForProvider: "",
       minorForProvider: "",
     };
@@ -148,35 +191,12 @@ export default {
   async mounted() {
     await this.$store.dispatch("getProviderWorkingHours"),
       //   this.$store.dispatch("getProviderServices");
-      this.getProviderServices();
+      await this.getProviderServices();
   },
   methods: {
     ...mapActions(["getProviderServices"]),
     movingToProviderProfileBtn: function () {
-      this.$router.push(
-        "/providerfullscreen/" +
-          this.showAllProviders.id +
-          "--" +
-          this.showAllProviders.uuid +
-          "--" +
-          this.showAllProviders.firstName +
-          "--" +
-          this.showAllProviders.lastName +
-          "--" +
-          this.showAllProviders.age +
-          "--" +
-          this.showAllProviders.gender +
-          "--" +
-          this.showAllProviders.phone +
-          "--" +
-          this.showAllProviders.education +
-          "--" +
-          this.showAllProviders.major +
-          "--" +
-          this.showAllProviders.status +
-          "--" +
-          this.showAllProviders.minor
-      );
+      this.$router.push("/providerfullscreen/" + this.showAllProviders.uuid);
     },
 
     deleteBtn(id) {
@@ -190,11 +210,6 @@ export default {
             })
             .then((res) => console.log(res.data, " تم وصلت"));
           this.dialog3 = true;
-          // console.log("sssssssssssss");
-          // this.deletedBtn = !this.deletedBtn;
-          // return this.showAllProviders.filter((items) => {
-          //   return items.uuid != uuid;
-          // });
         }
       } catch (err) {
         console.log(err);
@@ -205,18 +220,20 @@ export default {
         "SET_PROVIDER_SPECIALITY_ELIPSE",
         this.showAllProviders.major
       );
-      this.nameForProvider = this.showAllProviders.firstName;
-      console.log(this.nameForProvider);
       this.idForProvider = this.showAllProviders.id;
+      this.uuidForProviderIn = this.showAllProviders.uuid;
+      this.nameForProvider = this.showAllProviders.firstName;
+      this.lastNameForProviderIn = this.showAllProviders.lastName;
+      this.ageForProviderIn = this.showAllProviders.age;
+      this.genderForProviderIn = this.showAllProviders.gender;
       this.phoneForProvider = this.showAllProviders.phone;
+      this.educationForProviderIn = this.showAllProviders.education;
       this.specialityForProvider = this.showAllProviders.major;
       this.minorForProvider = this.showAllProviders.minor;
       this.dialog = true;
     },
   },
-  // mounted() {
-  //   this.showAllProviders();
-  // },
+
   computed: {
     ...mapGetters(["getAllHours", "getAllServicesWithProviders"]),
     getServicesRelatedToProvider: function () {
@@ -251,49 +268,42 @@ export default {
 <style lang="scss" scoped>
 .card {
   width: 370px;
-  height: 550px;
+  height: 32vh;
   border-radius: 10px;
   background-color: #fff;
   padding: 20px;
   border: 1px solid #009688;
   box-sizing: border-box;
-  position: relative;
 }
 .card:hover {
   transform: scale(1.02);
   transition: 0.2s;
 }
 .card-img {
-  height: 55%;
+  height: 100%;
   border-radius: 10px;
-  overflow: hidden;
-  position: relative;
   cursor: pointer;
 }
 .card-img img {
   width: 100%;
   height: 100%;
+  border-radius: 50% !important;
 }
-.card-body {
-  height: 27%;
-  color: hsl(215, 51%, 70%);
-  font-size: 14px;
-  padding-bottom: 10px;
-}
+
 .card-option {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 1em;
 }
-.card-body h3 {
+.card-option h3 {
   color: #009688;
   margin-bottom: 0;
   font-size: 1.3rem;
   cursor: pointer;
   font-weight: 400;
 }
-.card-body h5 {
+.card-option h5 {
   color: #009688;
 }
 .colors-days {
@@ -303,27 +313,6 @@ export default {
   color: #4db6ac;
 }
 .elipses {
-  color: #009688;
-}
-.card-body p {
-  font-weight: 300;
-  padding-top: 10px;
-  height: 100px;
-}
-.card-body-footer {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-}
-.card-body-footer div {
-  position: relative;
-}
-.card-body-footer div:nth-child(1) {
-  color: #009688;
-}
-.card-body-footer div:nth-child(2) {
-  padding-left: 22px;
   color: #009688;
 }
 </style>

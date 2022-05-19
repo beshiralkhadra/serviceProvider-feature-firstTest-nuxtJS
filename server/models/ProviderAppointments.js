@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
       },
-
+      providerUuid: {
+        type: DataTypes.UUID,
+      },
       date: {
         type: DataTypes.STRING,
       },

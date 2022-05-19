@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <template>
       <v-card>
-        <v-toolbar class="d-flex align-center justify-center teal" dark flat>
+        <v-toolbar class="d-flex align-center justify-center teal" dark>
           <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
           <!-- <v-toolbar-title>Your Dashboard</v-toolbar-title> -->
@@ -32,13 +32,35 @@
               <v-tab-item value="search">
                 <AddProvider />
               </v-tab-item>
+              <template>
+                <div class="text-center">
+                  <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn color="grey" v-bind="attrs" v-on="on">
+                        <v-icon left>mdi-menu-down</v-icon>
+                        <span>Menu</span>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item
+                        v-for="link in links"
+                        :key="link.text"
+                        router
+                        :to="link.route"
+                      >
+                        <v-list-item-title>{{ link.text }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </template>
             </v-tabs>
           </template>
         </v-toolbar>
 
         <v-tabs-items v-model="tab">
           <v-tab-item v-for="item in items2" :key="item">
-            <v-card flat>
+            <v-card>
               <v-card-text v-text="text"></v-card-text>
             </v-card>
           </v-tab-item>
@@ -80,15 +102,20 @@
 
 <script>
 import AddProvider from "../pages/addNewProvider/AddProvider.vue";
-import _ProviderDashboard from "../pages/providerfullscreen/_ProviderDashboard.vue";
+// import _ProviderDashboard from "../pages/providerfullscreen/_ProviderDashboard.vue";
 export default {
   data: () => ({
     drawer: null,
     tab: null,
     items2: ["web", "shopping", "videos", "images", "news"],
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    links: [
+      { icon: "Click Me", text: "beshir", route: "/" },
+      { icon: "Click Me", text: "beshir", route: "/" },
+      { icon: "Click Me", text: "beshir", route: "/" },
+    ],
   }),
-  components: { AddProvider, _ProviderDashboard },
+  components: { AddProvider },
 };
 </script>
 <style>

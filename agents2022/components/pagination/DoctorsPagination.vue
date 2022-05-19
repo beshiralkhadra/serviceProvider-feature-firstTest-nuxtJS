@@ -16,15 +16,8 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: {
-    sendWhichPage: {
-      type: String,
-    },
-  },
   data() {
-    return {
-      whereWeAreNow: "",
-    };
+    return {};
   },
   methods: {
     ...mapActions(["bringAllProvidersWithSameRole"]),

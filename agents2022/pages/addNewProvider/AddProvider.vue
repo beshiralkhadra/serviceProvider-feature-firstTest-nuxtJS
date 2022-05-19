@@ -105,7 +105,7 @@
           </div> -->
           <!---------------------------------------------- educations fields  -->
           <div class="d-flex">
-            <v-col md="4">
+            <v-col md="6">
               <v-text-field
                 v-model="education"
                 type="text"
@@ -115,25 +115,16 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-col md="4">
-              <v-text-field
-                v-model="major"
-                type="text"
-                name="major"
-                label="Speciality"
-                required
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col md="4">
-              <v-text-field
+
+            <v-col md="6">
+              <v-select
                 v-model="minor"
-                type="text"
-                name="minor"
-                label="Minor"
-                required
+                :items="getAllCategoriessFromApi.categories"
+                item-text="category_name"
+                label="choose category..."
                 hide-details
-              ></v-text-field>
+              >
+              </v-select>
             </v-col>
           </div>
           <v-select
@@ -204,7 +195,7 @@ export default {
       ],
       ///////////////////////////////////////////education
       education: "",
-      major: "",
+      // major: "",
       minor: "",
       //////////////////////////////////////////////// roles
       role: "",
@@ -213,21 +204,35 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getRoles");
+    this.actionForGetAllCategoriesFromApi();
   },
   computed: {
-    ...mapGetters(["getAllRoles"]),
+    ...mapGetters(["getAllRoles", "getAllCategoriessFromApi"]),
   },
   methods: {
-    ...mapActions(["setMajor"]),
+    ...mapActions([
+      "setMajor",
+      "actionForProviderRole",
+      "actionForGetAllCategoriesFromApi",
+    ]),
+
     onSubmit(e) {
       e.preventDefault();
       let role_id = null;
+      let category_id = null;
       this.getAllRoles.forEach((element) => {
         if (this.role == element.role_name) {
           role_id = element.id;
         }
       });
-      this.setMajor(this.major);
+      this.getAllCategoriessFromApi.categories.forEach((element) => {
+        if (this.minor == element.category_name) {
+          category_id = element.category_id;
+        }
+      });
+      this.actionForProviderRole(role_id);
+
+      this.setMajor(this.minor);
       if (this.$refs.form.validate()) {
         this.$axios
           .post("/providers/create", {
@@ -237,12 +242,12 @@ export default {
             age: this.age,
             gender: this.gender,
             phone: this.phone,
-
             education: this.education,
-            major: this.major,
+            category_id: category_id,
             minor: this.minor,
           })
-          .then(() => this.$router.push("/addnewprovider/workinghours"));
+          .then((resp) => console.log(resp));
+        this.$router.push("/addnewprovider/workinghours");
       }
     },
     // onChange(image) {

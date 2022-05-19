@@ -12,7 +12,7 @@
             <v-col cols="12" sm="12">
               <v-select
                 v-model="selectedServices"
-                :items="servicesState"
+                :items="getAllServicesFromApi.Services"
                 item-text="service_name"
                 label="Select"
                 multiple
@@ -40,7 +40,7 @@ export default {
   name: "AddProvider",
   mounted() {
     this.$store.dispatch("getMaxUuidAction");
-    //   this.$store.dispatch("getProviderServices");
+    this.$store.dispatch("actionForGetAllServicesFromApi");
   },
   data() {
     return {
@@ -52,10 +52,11 @@ export default {
 
   computed: {
     ...mapGetters([
-      "servicesInfo",
       "selectedCategory",
       "servicesState",
       "getMaxUuid",
+      "getProviderRole",
+      "getAllServicesFromApi",
     ]),
   },
   methods: {
@@ -63,13 +64,19 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       this.saveSelectedServices(this.selectedServices);
-      if (this.$refs.form.validate()) {
-        this.$axios
-          .post("/providers/createService", {
-            providerUuid: this.getMaxUuid,
-            selectedServices: this.selectedServices,
-          })
-          .then(() => this.$router.push("/"));
+      console.log(this.selectedServices);
+      try {
+        if (this.$refs.form.validate()) {
+          this.$axios
+            .post("/providers/createService", {
+              providerUuid: this.getMaxUuid,
+              roleId: this.getProviderRole,
+              selectedServices: this.selectedServices,
+            })
+            .then(() => this.$router.push("/"));
+        }
+      } catch (error) {
+        console.log(error.toString());
       }
     },
   },

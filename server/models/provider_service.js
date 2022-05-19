@@ -34,14 +34,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Provider_Service extends Model {
     static associate(models) {
-      this.belongsTo(models.Provider, {
-        foreignKey: "providerId",
-        as: "provider",
-      });
-      this.belongsTo(models.Service, {
-        foreignKey: "serviceId",
-        as: "service",
-      });
+      this.belongsTo(models.Provider);
     }
   }
   Provider_Service.init(
@@ -51,14 +44,13 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      providerId: {
-        type: DataTypes.INTEGER,
-      },
+
       providerUuid: {
         type: DataTypes.UUID,
       },
+
       serviceId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       service_name: {
         type: DataTypes.STRING,

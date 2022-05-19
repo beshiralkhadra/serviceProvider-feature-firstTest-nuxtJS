@@ -6,30 +6,10 @@
       <!-- </v-card-text> -->
       <v-card-actions>
         <v-btn class="categories-Btn mt-5" v-on:click="toggleBtnFunsCateg">
-          View All</v-btn
-        >
+          View
+        </v-btn>
       </v-card-actions>
     </v-row>
-
-    <!-- <v-expand-transition>
-      <v-card
-        v-if="reveal"
-        class="transition-fast-in-fast-out v-card--reveal"
-        style="height: 100%"
-      >
-        <v-card-text class="pb-0">
-          <p class="text-h4 text--primary">Origin</p>
-          <p>
-            late 16th century (as a noun denoting a place where alms were
-            distributed): from medieval Latin eleemosynarius, from late Latin
-            eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’
-          </p>
-        </v-card-text>
-        <v-card-actions class="pt-0">
-          <v-btn text color="white " @click="reveal = false"> Close </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-expand-transition> -->
   </v-card>
 </template>
 
@@ -49,7 +29,8 @@ export default {
     toggleBtnFunsCateg: function () {
       this.setWhatRole(this.gettingAllData.id);
       this.bringAllProvidersWithSameRole();
-      this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
+      // this.$router.push(this.gettingAllData.link + this.gettingAllData.title);
+      this.$router.push(this.gettingAllData.link);
     },
   },
 };

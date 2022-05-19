@@ -159,6 +159,10 @@ module.exports = (sequelize, DataTypes) => {
       saturdayT2: {
         type: DataTypes.STRING,
       },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: "latest",
+      },
     },
     {
       sequelize,

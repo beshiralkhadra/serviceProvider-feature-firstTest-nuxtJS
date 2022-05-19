@@ -1,11 +1,7 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" persistent max-width="500px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="#35b5ac" max-width="100" dark v-bind="attrs" v-on="on">
-          Vacation
-        </v-btn>
-      </template>
+    <v-dialog v-model="showVacationDialog" persistent max-width="500px">
+      {{ assignVacationDialog }}
       <v-col md="12">
         <v-row class="align-center justify-center">
           <v-card>
@@ -17,6 +13,16 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
+                      v-if="nameForProviderUpdate"
+                      label="Employee Name"
+                      v-model="nameForProviderUpdate"
+                      type="text"
+                      name="nameForProviderIn"
+                      readonly
+                      hide-details
+                    ></v-text-field>
+                    <v-text-field
+                      v-else
                       label="Employee Name"
                       v-model="nameForProviderIn"
                       type="text"
@@ -28,6 +34,17 @@
 
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
+                      v-if="vacationFromUpdate"
+                      label="From"
+                      v-model="vacationFromUpdate"
+                      :min="nowDate"
+                      type="date"
+                      name="vacationFromUpdate"
+                      required
+                      hide-details
+                    ></v-text-field>
+                    <v-text-field
+                      v-else
                       label="From"
                       v-model="vacationFrom"
                       :min="nowDate"
@@ -39,6 +56,17 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
+                      v-if="vacationToUpdate"
+                      label="To"
+                      v-model="vacationToUpdate"
+                      :min="nowDate"
+                      type="date"
+                      name="vacationToUpdate"
+                      required
+                      hide-details
+                    ></v-text-field>
+                    <v-text-field
+                      v-else
                       label="To"
                       v-model="vacationTo"
                       :min="nowDate"
@@ -50,17 +78,27 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      label="Date Requested"
-                      v-model="dateRequested"
+                      label="Apply Date"
+                      v-model="vacationApplyDate"
                       :min="nowDate"
                       type="date"
-                      name="dateRequested"
-                      required
+                      name="vacationApplyDate"
+                      readonly
                       hide-details
                     ></v-text-field>
                   </v-col>
                   <v-col md="6">
                     <v-text-field
+                      v-if="vacationDaysUpdate"
+                      v-model="vacationDaysUpdate"
+                      type="number"
+                      name="vacationDaysUpdate"
+                      label="Vacation Days Requested"
+                      required
+                      hide-details
+                    ></v-text-field>
+                    <v-text-field
+                      v-else
                       v-model="requestedDays"
                       type="number"
                       name="requestedDays"
@@ -80,6 +118,7 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
+                      v-if="vacationFromUpdate == null"
                       v-model="reasonToVacation"
                       label="Reason*"
                       type="text"
@@ -88,12 +127,40 @@
                       hide-details
                     ></v-text-field>
                   </v-col>
+                  <v-col cols="12" v-if="statusForVacationUpdate">
+                    <v-select
+                      v-model="selectStatus"
+                      :items="statusOptions"
+                      label="choose status..."
+                      hide-details
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col md="6">
+                    <span style="font-weight: 600; font-size: 1rem"
+                      >Status:
+                    </span>
+                    <span
+                      :class="[
+                        statusForVacationUpdate == 'accepted'
+                          ? 'acceptedLeave'
+                          : null,
+                        statusForVacationUpdate == 'on hold'
+                          ? 'orginalStatus'
+                          : 'null',
+                        statusForVacationUpdate == 'refused'
+                          ? 'refusedLeave'
+                          : 'null',
+                      ]"
+                      >{{ statusForVacationUpdate }}</span
+                    >
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="teal" text @click="dialog = false"> Close </v-btn>
+              <v-btn color="teal" text @click="close"> Close </v-btn>
               <v-btn
                 color="#35b5ac"
                 class="white--text"
@@ -108,26 +175,64 @@
       </v-col>
     </v-dialog>
     <v-row v-if="requested">
-      <PopupSuccess :handlePopMessageBtn="handlePopMessageBtn" />
+      <PopupSuccess :dialog2.sync="dialog2" />
     </v-row>
   </div>
 </template>
 <script>
 import PopupSuccess from "../PopupSuccess.vue";
+import { mapGetters } from "vuex";
+
 export default {
   props: {
-    testId: {
+    vacationDialog: {
+      type: Boolean,
+      default: false,
+    },
+
+    providerInformation: {
+      type: String,
+    },
+    ////////////////////////////coming from vacation table
+    idForVacatioUpdate: {
+      type: Number,
+    },
+    nameForProviderUpdate: {
+      type: String,
+    },
+    uuidForProviderUpdate: {
+      type: String,
+    },
+    vacationFromUpdate: {
+      type: String,
+    },
+    vacationToUpdate: {
+      type: String,
+    },
+    reasonToVacationUpdate: {
+      type: String,
+    },
+    vacationDaysUpdate: {
+      type: Number,
+    },
+    idForProviderUpdate: {
+      type: Number,
+    },
+    statusForVacationUpdate: {
       type: String,
     },
   },
   data() {
     return {
+      showVacationDialog: null,
       dialog: false,
+      dialog2: false,
       idForProviderIn: "",
+      uuidForProviderIn: "",
       nameForProviderIn: "",
       dateRequested: "",
       nowDate: new Date().toISOString().slice(0, 10),
-      minDate: new Date().toISOString().substr(0, 10),
+      vacationApplyDate: new Date().toISOString().substr(0, 10),
       vacationFrom: "",
       vacationTo: "",
       reasonToVacation: "",
@@ -136,40 +241,88 @@ export default {
       requestedDays: "",
       vacationType: "",
       vacationTypes: ["annually", "sick", "other"],
+      selectStatus: null,
+      statusOptions: ["accepted", "refused", "on hold"],
     };
   },
   methods: {
     requestLeave(e) {
       e.preventDefault();
-
-      this.$axios
-        .post("/providers/vacationApplication", {
-          dateRequested: this.dateRequested,
-          vacationFrom: this.vacationFrom,
-          vacationTo: this.vacationTo,
-          reasonToLeave: this.reasonToLeave,
-          requestedDays: this.requestedDays,
-          vacationType: this.vacationType,
-          providerId: this.idForProviderIn,
-        })
-        .then(() => {
-          this.dialog = false;
-          this.requested = true;
-        });
+      if (this.info) {
+        this.$axios
+          .post("/providers/vacationApplication", {
+            providerName: this.nameForProviderIn,
+            providerUuid: this.uuidForProviderIn,
+            vacationFrom: this.vacationFrom,
+            vacationTo: this.vacationTo,
+            dateRequested: this.vacationApplyDate,
+            reasonToVacation: this.reasonToVacation,
+            requestedDays: this.requestedDays,
+            vacationType: this.vacationType,
+            providerId: this.idForProviderIn,
+          })
+          .then(() => {
+            this.vacationDialog = !this.vacationDialog;
+            this.requested = true;
+          });
+        this.dialog2 = true;
+      } else if (this.vacationFromUpdate) {
+        console.log(this.idForVacatioUpdate);
+        this.$axios
+          .put("/providers/updateVacationForProvider", {
+            vacationIdUpdate: this.idForVacatioUpdate,
+          })
+          .then((res) => {
+            this.$axios
+              .post("/providers/vacationApplication", {
+                providerName: this.nameForProviderUpdate,
+                providerUuid: this.uuidForProviderUpdate,
+                vacationFrom: this.vacationFromUpdate,
+                vacationTo: this.vacationToUpdate,
+                dateRequested: this.vacationApplyDate,
+                reasonToVacation: this.reasonToVacationUpdate,
+                requestedDays: this.requestedDays,
+                vacationType: this.vacationType,
+                status: this.selectStatus,
+                providerId: this.idForProviderUpdate,
+              })
+              .then(() => {
+                this.$store.dispatch("actionForGettingAllVacations");
+                this.vacationDialog = !this.vacationDialog;
+              });
+          });
+      }
     },
-    handlePopMessageBtn() {
-      this.requested = flase;
+    close() {
+      this.$emit("update:vacationDialog", false);
     },
   },
   mounted() {
-    let [id, name] = this.testId.split("--");
-    const [newName] = name.split('"');
-    id = id.substring(0);
-    this.idForProviderIn = id;
-    this.nameForProviderIn = newName;
+    if (this.providerInformation) {
+      let [uuid, id, name] = this.providerInformation.split("--");
+      const [newName] = name.split('"');
+      uuid = uuid.substring(0);
+      (this.uuidForProviderIn = uuid), (this.idForProviderIn = id);
+      this.nameForProviderIn = newName;
+    }
+
     // console.log(this.nameForProviderIn);
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["info"]),
+
+    assignVacationDialog() {
+      this.showVacationDialog = this.vacationDialog;
+    },
+    updateData() {},
+  },
+  watch: {
+    info() {
+      this.idForProviderIn = this.info[0].id;
+      this.uuidForProviderIn = this.info[0].uuid;
+      this.nameForProviderIn = this.info[0].firstName;
+    },
+  },
   components: { PopupSuccess },
 };
 </script>

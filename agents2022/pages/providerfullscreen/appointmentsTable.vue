@@ -1,6 +1,6 @@
 <template>
   <div className="reservation-table">
-    {{ getAllAppointmentsForSpecificProvider }}
+    <!-- {{ getAllAppointmentsForSpecificProvider }} -->
     <table>
       <thead>
         <tr>
@@ -17,12 +17,12 @@
           v-for="detailedInfo in bringAllAppointmentsForSpecificProvider"
           :key="detailedInfo.id"
         >
-          <td data-column="ID">{{ detailedInfo.id }}</td>
+          <!-- <td data-column="ID">{{ detailedInfo.id }}</td>
           <td data-column="USERNAME">{{ detailedInfo.date }}</td>
           <td data-column="SERVICE">{{ detailedInfo.from }}</td>
           <td data-column="ID">{{ detailedInfo.to }}</td>
           <td data-column="ID">{{ detailedInfo.booked }}</td>
-          <td data-column="SERVICE">{{ detailedInfo.createdAt }}</td>
+          <td data-column="SERVICE">{{ detailedInfo.createdAt }}</td> -->
           <!-- <td data-column="SERVICE"><v-icon small @click="deleteButton(detailedInfo.id)" style="color: red;">mdi-delete</v-icon></td> -->
           <!-- <td data-column="SERVICE"><v-icon small @click="editProvider(detailedInfo.id)" style="color: green;">mdi-pencil</v-icon></td> -->
           <!-- <td data-column="SERVICE">
@@ -49,13 +49,13 @@ export default {
       newEmail: "",
     };
   },
-  mounted() {
-    this.$store.dispatch("getAllAppointmentsForSpecificProvider");
+  async mounted() {
+    // await this.$store.dispatch("getAllAppointmentsForSpecificProvider");
   },
   methods: {},
 
   computed: {
-    ...mapGetters(["bringAllAppointmentsForSpecificProvider"]),
+    // ...mapGetters(["bringAllAppointmentsForSpecificProvider"]),
   },
 };
 </script>
@@ -130,7 +130,5 @@ th {
     color: #000;
     font-weight: bold;
   }
-}
-@media screen and (max-width: 769px) {
 }
 </style>

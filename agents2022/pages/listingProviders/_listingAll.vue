@@ -2,7 +2,9 @@
   <v-container fluid class="ma-0 pa-0">
     <v-parallax class="hero">
       <div class="hero-inner">
-        <h1>OUR {{ $route.params.listingAll }}</h1>
+        <!-- <h1>OUR {{ $route.params.listingAll }}</h1> -->
+        <h1>OUR PROVIDERS</h1>
+
         <h2>
           <v-row class="justify-center">
             <v-breadcrumbs :items="itemsBread" large>
@@ -19,7 +21,8 @@
         <v-icon class="mr-5" large color="white" right>
           mdi-account-box
         </v-icon>
-        <h1 class="white--text">FIND A {{ $route.params.listingAll }}</h1>
+        <!-- <h1 class="white--text">FIND A {{ $route.params.listingAll }}</h1> -->
+        <h1 class="white--text">FIND PROVIDER</h1>
         <v-text-field
           type="text"
           dense
@@ -34,10 +37,10 @@
     </v-toolbar>
 
     <v-container>
-      <v-row class="mt-5 justify-center">
+      <v-row class="mt-5">
         <ScrollToTop />
         <!-- ////////////////////////////////////////////////////////// -->
-        <div class="mt-12 pa-5">
+        <!-- <div class="mt-12 pa-5">
           <h3 class="mb-5">FILTER {{ $route.params.listingAll }}</h3>
           <v-autocomplete
             v-model="item"
@@ -57,8 +60,8 @@
               label="Filter based on services"
               hide-details
             ></v-autocomplete>
-          </div>
-          <!-- <v-autocomplete
+          </div> -->
+        <!-- <v-autocomplete
             v-model="item"
             :items="items"
             class="mb-5"
@@ -66,20 +69,18 @@
             label="Filter based on category"
             hide-details
           ></v-autocomplete> -->
-        </div>
+        <!-- </div> -->
         <!-- //////////////////////////////////////////////// -->
-
-        <div style="width: 80%">
-          <v-row v-if="myAllProvidersWithSameRole.length != 0" style="gap: 1em">
-            <!-- <CardsForListing
-              v-for="(showAllProviders, index) in myAllProvidersWithSameRole"
-              :key="showAllProviders.id"
-              :showAllProviders="showAllProviders"
-              :index_of_array="index"
-            /> -->
+        <v-col md="12">
+          <p class="provider-contarct-title">Our Doctors</p>
+          <v-row
+            v-if="listingProvidersWithResponse.length != 0"
+            style="gap: 1em"
+          >
             <TestingCard
-              v-for="(showAllProviders, index) in myAllProvidersWithSameRole"
+              v-for="(showAllProviders, index) in listingProvidersWithResponse"
               :key="showAllProviders.id"
+              v-if="showAllProviders.RoleId == '1'"
               :showAllProviders="showAllProviders"
               :index_of_array="index"
             />
@@ -89,11 +90,57 @@
             class="justify-center align-center"
             style="height: 50vh"
           >
-            <h1 class="teal--text">
-              THERE IS NO {{ $route.params.listingAll }}
-            </h1>
+            <h1 class="teal--text">THERE IS NO DOCTORS</h1>
           </v-row>
-        </div>
+          <DoctorsPagination class="mt-12" />
+        </v-col>
+        <v-col md="12">
+          <p class="provider-contarct-title">Our Assistants</p>
+
+          <v-row v-if="listingAssistants.length != 0" style="gap: 1em">
+            <TestingCard
+              v-for="(showAllProviders, index) in listingAssistants"
+              :key="showAllProviders.id"
+              v-if="showAllProviders.RoleId == '2'"
+              :showAllProviders="showAllProviders"
+              :index_of_array="index"
+            />
+          </v-row>
+          <v-row
+            v-else
+            class="justify-center align-center"
+            style="height: 50vh"
+          >
+            <h1 class="teal--text">THERE IS NO ASSISTANTS</h1>
+          </v-row>
+          <!-- <ThePagination
+            :sendWhichPage="$route.params.listingAll"
+            class="mt-12"
+          /> -->
+          <AssistantsPagination class="mt-12" />
+        </v-col>
+        <v-col md="12">
+          <p class="provider-contarct-title">Our Specialists</p>
+
+          <v-row v-if="listingSpecialists.length != 0" style="gap: 1em">
+            <TestingCard
+              v-for="(showAllProviders, index) in listingSpecialists"
+              :key="showAllProviders.id"
+              v-if="showAllProviders.RoleId == '3'"
+              :showAllProviders="showAllProviders"
+              :index_of_array="index"
+            />
+          </v-row>
+          <v-row
+            v-else
+            class="justify-center align-center"
+            style="height: 50vh"
+          >
+            <h1 class="teal--text">THERE IS NO SPECIALISTS</h1>
+          </v-row>
+          <SpecialistsPagination class="mt-12" />
+        </v-col>
+
         <!-- <v-col cols="9" class="mt-5">
             <v-text-field
               type="text"
@@ -108,16 +155,20 @@
         <!-- <SearchBar @getOnchange="getOnchange"/> -->
       </v-row>
     </v-container>
-    <ThePagination :sendWhichPage="$route.params.listingAll" class="ma-12" />
+    <!-- <ThePagination :sendWhichPage="$route.params.listingAll" class="ma-12" /> -->
   </v-container>
 </template>
 
 <script>
-import CardsForListing from "../../components/cards/cardsForListing.vue";
+import { mapGetters } from "vuex";
+
 import SearchBar from "../../components/searchBar.vue";
 import ScrollToTop from "../../components/ScrollToTop.vue";
-import ThePagination from "../../components/ThePagination.vue";
+import ThePagination from "../../components/pagination/DoctorsPagination.vue";
 import TestingCard from "../../components/cards/TestingCard.vue";
+import AssistantsPagination from "../../components/pagination/AssistantsPagination.vue";
+import SpecialistsPagination from "../../components/pagination/SpecialistsPagination.vue";
+import DoctorsPagination from "../../components/pagination/DoctorsPagination.vue";
 export default {
   // layout: "listingProviders",
   name: "IndexPage",
@@ -157,62 +208,85 @@ export default {
     //   console.log(searchTerm)
     // }
   },
-  mounted() {
-    this.$store.dispatch("setWhatRole");
+  async mounted() {
+    await this.$store.dispatch("setWhatRole");
     // this.$store.dispatch("setWhatRole");
+    // this.$store.dispatch("getRoles");
+    this.$store.dispatch("bringAllProvidersWithSameRole");
+    this.$store.dispatch("bringAllAssistants");
+    this.$store.dispatch("bringAllSpecialists");
   },
   computed: {
-    myAllProvidersWithSameRole() {
-      // console.log(this.$store.getters.listingProvidersWithResponse);
-      if (this.searchTerm) {
-        let savingAllProviders =
-          this.$store.getters.listingProvidersWithResponse.filter((item) => {
-            return this.searchTerm
-              .toLowerCase()
-              .split("")
-              .every((v) => item.firstName.toLowerCase().includes(v));
-          });
-        if (savingAllProviders.length == 0) {
-          // console.log(savingAllProviders);
-          return savingAllProviders;
-        } else {
-          return savingAllProviders;
-        }
-      } else if (this.item) {
-        // console.log(this.selectService);
-        return this.$store.getters.listingProvidersWithResponse.filter(
-          (item) => {
-            return this.item.includes(item.major);
-          }
-        );
-      }
-      //  else if (this.selectService) {
-      //   console.log(this.selectService);
-      //   return this.$store.getters.getAllServicesWithProviders.filter(
-      //     (item) => {
-      //       return this.item.includes(item.service_name);
-      //     }
-      //   );
-      // }
-      else {
-        return this.$store.getters.listingProvidersWithResponse;
-      }
-    },
+    ...mapGetters([
+      "listingProvidersWithResponse",
+      "listingAssistants",
+      "listingSpecialists",
+    ]),
+
+    // myAllProvidersWithSameRole() {
+    //   // console.log(this.$store.getters.listingProvidersWithResponse);
+    //   if (this.searchTerm) {
+    //     let savingAllProviders =
+    //       this.$store.getters.listingProvidersWithResponse.filter((item) => {
+    //         return this.searchTerm
+    //           .toLowerCase()
+    //           .split("")
+    //           .every((v) => item.firstName.toLowerCase().includes(v));
+    //       });
+    //     if (savingAllProviders.length == 0) {
+    //       // console.log(savingAllProviders);
+    //       return savingAllProviders;
+    //     } else {
+    //       return savingAllProviders;
+    //     }
+    //   } else if (this.item) {
+    //     // console.log(this.selectService);
+    //     return this.$store.getters.listingProvidersWithResponse.filter(
+    //       (item) => {
+    //         return this.item.includes(item.major);
+    //       }
+    //     );
+    //   }
+    //  else if (this.selectService) {
+    //   console.log(this.selectService);
+    //   return this.$store.getters.getAllServicesWithProviders.filter(
+    //     (item) => {
+    //       return this.item.includes(item.service_name);
+    //     }
+    //   );
+    // }
+    // else {
+    //   return this.$store.getters.listingProvidersWithResponse;
+    // }
+    // },
   },
   components: {
-    CardsForListing,
     SearchBar,
     ScrollToTop,
     ThePagination,
     TestingCard,
+    AssistantsPagination,
+    SpecialistsPagination,
+    DoctorsPagination,
   },
 };
 </script>
 <style scoped>
+.provider-contarct-title {
+  margin-bottom: 1em;
+  /* margin-left: 2.9em; */
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 37px;
+  border-bottom: 1px solid #cfcccc;
+  width: 20%;
+  color: #35b5ac;
+}
 .header-doctors {
   text-align: center;
   font-weight: bold;
-  color: #1976d2;
+  color: #009688;
   display: flex;
   justify-content: center;
   border-bottom: solid;

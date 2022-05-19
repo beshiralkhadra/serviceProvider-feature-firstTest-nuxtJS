@@ -1,14 +1,15 @@
 <template>
-  <v-row class="flex-column">
+  <div>
     <h1 class="header-doctors">OUR DEPARTMENTS</h1>
     <v-row justify="center" align="center">
       <CategoryCard
         v-for="gettingAllData in categoryData"
         :key="gettingAllData.id"
         :gettingAllData="gettingAllData"
+        class="ma-5"
       />
     </v-row>
-  </v-row>
+  </div>
 </template>
 
 <script>
@@ -24,7 +25,6 @@ export default {
       categoryData: data,
     };
   },
-  methods: {},
 };
 </script>
 <style scoped>
@@ -32,12 +32,15 @@ export default {
   text-align: center;
   font-weight: bold;
   color: #009688;
-  display: flex;
-  justify-content: center;
-  border-bottom: solid;
-  width: 40%;
-  align-items: center;
   margin: 2em auto;
   padding-bottom: 0.5em;
+}
+.header-doctors::after {
+  content: "";
+  display: block;
+  width: 30vw;
+  height: 4px;
+  background: #009688;
+  margin: 0.5rem auto 0;
 }
 </style>

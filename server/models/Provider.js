@@ -15,14 +15,17 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Role);
       this.hasMany(models.Day, { as: "provider_id" });
       this.hasMany(models.LeaveApplication);
+      this.hasMany(models.Provider_Service);
       this.hasMany(models.VacationApplication);
       this.hasMany(models.ProviderAppointments);
+      this.hasMany(models.AttendanceEmployee);
+      this.hasMany(models.BalanceProvider);
 
-      this.belongsToMany(models.Service, {
-        foreignKey: "providerId",
-        through: "Provider_Service",
-        as: "Service",
-      });
+      // this.belongsToMany(models.Service, {
+      //   foreignKey: "providerId",
+      //   through: "Provider_Service",
+      //   as: "Service",
+      // });
     }
   }
   Provider.init(
@@ -40,7 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       lastName: {
         type: DataTypes.STRING,
@@ -73,9 +75,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      status: {
-        type: DataTypes.STRING,
-      },
+
       status: {
         type: DataTypes.STRING,
         defaultValue: "latest",

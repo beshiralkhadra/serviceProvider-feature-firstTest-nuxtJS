@@ -53,6 +53,20 @@ export default {
       target: "http://localhost:30112/",
       pathRewrite: { "^/providers/": "" },
     },
+    // "/billing/": {
+    //   target: "https://6277698b08221c968464b747.mockapi.io/finance",
+    //   pathRewrite: { "^/billing/": "" },
+    // },
+    // "/services/": {
+    //   target: "https://6277698b08221c968464b747.mockapi.io/services",
+    //   pathRewrite: { "^/services/": "" },
+    // },
+    "/api-gateway/": {
+      // https://odd-goat-41.app.smartmock.io
+      // http://localhost:3500
+      target: "https://api.development.agentsoncloud.com/external/public",
+      pathRewrite: { "^/api-gateway/": "" },
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
